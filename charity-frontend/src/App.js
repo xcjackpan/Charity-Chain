@@ -7,13 +7,13 @@ import { firebase, auth, db } from './configs';
 import './App.css';
 import 'antd/dist/antd.css';
 
-async function testEndpoint() {
-  const res = await db.getSpecificCharity('-LokgL9xMCJ0MbybwJis');
-  console.log(res);
-}
+// async function testEndpoint() {
+//   const res = await db.incrementDonation('-LokjEwXV8gjG1Ut-8lU');
+//   console.log(res);
+// }
 
 function App() {
-  testEndpoint();
+  // testEndpoint();
   return (
     <div className="App">
       <BrowserRouter>
