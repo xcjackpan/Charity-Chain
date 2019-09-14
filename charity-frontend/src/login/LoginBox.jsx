@@ -33,7 +33,7 @@ export default class LoginBox extends React.Component {
             <Heart className="icon" size={100} /> :
             <User className="icon" size={100} />
         }
-        <Form onSubmit={this.handleSubmit} className="login-form">
+        <Form className="login-form">
           <Form.Item>
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -57,7 +57,8 @@ export default class LoginBox extends React.Component {
                   Forgot password
                 </a>
               </span>
-              <Button type="primary" htmlType="submit" className="login-form-button">
+              <Button type="primary" className="login-form-button"
+                      onClick={() => {this.props.logIn(this.state.username, this.props.isCharity);}}>
                 Log in
               </Button>
               <span>

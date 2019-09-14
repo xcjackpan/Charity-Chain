@@ -11,6 +11,7 @@ export default class Login extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(this.props);
     this.state = {
       showLogin: NO_LOGIN,
     }
@@ -32,7 +33,8 @@ export default class Login extends React.Component {
       return (
         <div id="login-container">
           <LoginBox isCharity={this.state.showLogin === CHARITY_LOGIN}
-                    changeLogin={this.changeLogin}/>
+                    changeLogin={this.changeLogin} 
+                    logIn={this.props.logIn} />
         </div>
       )
     }
