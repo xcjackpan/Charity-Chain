@@ -1,7 +1,7 @@
 import React from 'react';
-import './Login.css';
 import LoginSelect from './LoginSelect';
 import LoginBox from './LoginBox';
+import './Login.css';
 
 const NO_LOGIN = 0;
 const CHARITY_LOGIN = 1;
