@@ -1,0 +1,42 @@
+.home {
+  width: 90vw;
+  margin: auto;
+}
+
+.charity-list {
+  margin: 36px 0;
+}
+
+.charity-list-scroll-container {
+  display: flex;
+  position: relative;
+}
+
+.charity-list-scroll-container::after {
+  display: flex;
+  content:"";
+  height: 100%;
+  width: 150px;
+  right: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0), #fff);
+  position: absolute;
+}
+
+.charity-list-scroll {
+  display: flex;
+  overflow-x: scroll;
+  position: relative;
+}
+
+.charity-list-scroll::-webkit-scrollbar { 
+  display: none;
+}
+
+.charity-list .charity-card {
+  min-width: 200px;
+  margin: 10px;
+}
+
+.charity-list .charity-card .ant-card-body {
+  padding: 0;
+}
