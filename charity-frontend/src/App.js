@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import CharityView from './charity/CharityView';
 import Login from './login/Login';
 import Home from './home/Home';
+import './configs';
 import './App.css';
 import 'antd/dist/antd.css';
 
