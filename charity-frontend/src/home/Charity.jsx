@@ -39,24 +39,22 @@ export default class Charity extends React.Component {
         <Card
           className="charity-card"
           cover={
-            this.state.isHovering ?
-            // <ResponsiveContainer width="100%" height="100%">
-              <PieChart isAnimationActive width={400} height={300}>
-                <Pie
-                  data={data}
-                  dataKey="value"
-                  nameKey="name"
-                  innerRadius={60}
-                  outerRadius={100}
-                  label={this.renderLabel}
-                  isAnimationActive
-                  animationBegin={100}
-                  animationDuration={1000}
-                >
-                  {data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
-                </Pie>
-              </PieChart> :
-            // </ResponsiveContainer> :
+            // this.state.isHovering ?
+            // <PieChart isAnimationActive width={400} height={300}>
+            //   <Pie
+            //     data={data}
+            //     dataKey="value"
+            //     nameKey="name"
+            //     innerRadius={60}
+            //     outerRadius={100}
+            //     label={this.renderLabel}
+            //     isAnimationActive
+            //     animationBegin={100}
+            //     animationDuration={1000}
+            //   >
+            //     {data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
+            //   </Pie>
+            // </PieChart> :
             <img src={charity.image} />
           }
           onClick={this.showModal}
