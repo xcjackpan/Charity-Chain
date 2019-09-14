@@ -3,23 +3,33 @@ import { db } from './firebase';
 // User API
 
 
-export const getListOfUsers = () =>
-    db.ref('users').once('value');
-
-export const getSpecificUser = (uid) =>
-    db.ref(`user/${uid}`).once('value');
-
-export const getRefOfCharities = () => {
-  const charities = db.ref('charities');
-  charities.on("value", function(snapshot) {
-    console.log(snapshot.val());
-  }, function (errorObject) {
-    console.log("The read failed: " + errorObject.code);
-  });
+export const getListOfUsers = () => {
+  return db.ref('users').once('value')
+    .then(snapshot => {
+      return snapshot.val();
+    });
 }
 
-export const getSpecificCharity = (uid) =>
-    db.ref(`charity/${uid}`).once('value');
+export const getSpecificUser = (uid) => {
+  return db.ref(`users/${uid}`).once('value')
+    .then(snapshot => {
+      return snapshot.val();
+    });
+}
+
+export const getRefOfCharities = () => {
+  return db.ref('charities').once('value')
+    .then(snapshot => {
+      return snapshot.val();
+    });
+}
+
+export const getSpecificCharity = (uid) => {
+  return db.ref(`charities/${uid}`).once('value')
+    .then(snapshot => {
+      return snapshot.val();
+    });
+}
 
 export const addTransactionToUser = (uid, public_id) => {
     db.ref(`users/${uid}/transaction/${public_id}`).push(public_id);

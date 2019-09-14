@@ -8,8 +8,8 @@ import './App.css';
 import 'antd/dist/antd.css';
 
 async function testEndpoint() {
-  const users = await db.getEmailOfUser('1')
-    console.log(users);
+  const res = await db.getSpecificCharity('-LokgL9xMCJ0MbybwJis');
+  console.log(res);
 }
 
 function App() {
