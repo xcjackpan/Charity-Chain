@@ -70,11 +70,12 @@ export const incrementDonation = (uid) => {
   });
 }
 
-export const doCreateCharity = (id, account_number, email, image, donation_count = 0) =>
+export const doCreateCharity = (id, account_number, email, category, image, donation_count = 0) =>
   db.ref('charities').push({
     public_id: id,
     account_number,
     email,
+    category,
     image,
     donation_count
   });
