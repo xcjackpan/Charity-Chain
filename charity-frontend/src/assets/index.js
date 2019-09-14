@@ -1,0 +1,1 @@
+export { default as Unicef } from './unicef.png';
