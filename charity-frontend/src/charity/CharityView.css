@@ -13,10 +13,17 @@
   color: white;
   display: flex;
   font-size: 24px;
+  align-items: center;
 }
 
 .top-bar .credits {
   margin-left: auto;
+}
+
+.top-bar .logout {
+  margin-left: 5%;
+  background-color: transparent;
+  color: white;
 }
 
 .sider {

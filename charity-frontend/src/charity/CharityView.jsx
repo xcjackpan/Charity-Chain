@@ -1,6 +1,6 @@
 import React from 'react';
 import td_auth from './td_auth';
-import { Table, Layout, Modal, Spin } from 'antd';
+import { Button, Table, Layout, Modal, Spin } from 'antd';
 import CharitySider from './CharitySider';
 import './CharityView.css';
 import axios from 'axios';
@@ -145,19 +145,12 @@ export default class CharityView extends React.Component {
     };
     return (
       <div id="charity-view-container">
-        <Modal
-          title="Basic Modal"
-          visible={this.state.showConfirm}
-          onOk={this.toggleConfirm}
-          onCancel={this.toggleConfirm}
-        >
-          HEY
-        </Modal>
         <Layout>
           <Header className="header">
             <div className="top-bar">
               <span className="name">UNICEF</span>
               <span className="credits">300 credits</span>
+              <Button className="logout">Log out</Button>
             </div>
           </Header>
           <Layout>

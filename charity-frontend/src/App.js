@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import CharityView from './charity/CharityView';
 import Login from './login/Login';
 import Home from './home/Home';
+import ProfileContainer from './profile/ProfileContainer';
 import { firebase, auth, db } from './configs';
 import './App.css';
 import 'antd/dist/antd.css';
@@ -20,6 +21,7 @@ function App() {
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/charity" component={CharityView} />
+          <Route path="/profile" component={ProfileContainer} />
           {/* user and charity views */}
           <Route exact path="/" component={Home} />
         </Switch>
