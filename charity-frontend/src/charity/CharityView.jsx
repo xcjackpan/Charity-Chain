@@ -8,12 +8,14 @@ import { doCreateCharity,getRefOfCharities } from '../configs/db.js';
 const { Header, Footer, Sider, Content } = Layout;  
 const {apiKey, initialCustomerId} = td_auth;
 
+const base64 = "";
+
 export default class CharityView extends React.Component {
   componentDidMount() {
     getRefOfCharities()
   }
 
-  addCharity = () => doCreateCharity("id", 1234567890, "charity@unicef.org", 'base64')
+  // addCharity = () => doCreateCharity("id", 4242584820, "donate@wwf.com", "Animals", base64)
 
   render() {
     return (

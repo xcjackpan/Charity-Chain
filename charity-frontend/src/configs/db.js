@@ -44,11 +44,12 @@ export const consumeTransactionFromUser = (uid, public_id) => {
 export const getRefOfConsumedTransactions = (uid) =>
   db.ref(`users/${uid}/consumed_transactions`);
 
-export const doCreateCharity = (id, account_number, email, image) =>
+export const doCreateCharity = (id, account_number, email, category, image) =>
   db.ref('charities').push({
     public_id: id,
     account_number,
     email,
+    category,
     image,
   });
 
