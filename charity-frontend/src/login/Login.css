@@ -1,5 +1,57 @@
 #login-container {
   width: 100vw;
   height: 100vh;
-  background-color: red;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.login-select {
+  width: 20vw;
+  height: 50vh;
+  border-radius: 5%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login-select .icon {
+  color: white;
+  border-radius: 5%;
+  background-color: #a9a9a9;
+  padding: 20% 5%;
+}
+
+.login-select .icon:hover {
+  cursor: pointer;
+}
+
+.login-select .label {
+  font-size: 25px;
+  padding: 10%;
+}
+
+.login-box {
+  width: 30vw;
+  height: 50vh;
+}
+
+.login-box #login-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-box #login-options .login-span {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.login-box .back {
+  width: 15vw;
+}
+
+.avatar {
+  color: white;
 }
