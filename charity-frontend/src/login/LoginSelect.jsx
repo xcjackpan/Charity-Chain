@@ -1,6 +1,6 @@
 import React from 'react';
-import './Login.css';
 import { Heart, User } from 'react-feather';
+import { Button } from 'antd';
 
 const LoginSelect = (props) => {
   return (

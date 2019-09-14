@@ -9,8 +9,14 @@ export const getListOfUsers = () =>
 export const getSpecificUser = (uid) =>
     db.ref(`user/${uid}`).once('value');
 
-export const getRefOfCharities = () =>
-    db.ref('charities');
+export const getRefOfCharities = () => {
+  const charities = db.ref('charities');
+  charities.on("value", function(snapshot) {
+    console.log(snapshot.val());
+  }, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+  });
+}
 
 export const getSpecificCharity = (uid) =>
     db.ref(`charity/${uid}`).once('value');
@@ -38,11 +44,12 @@ export const consumeTransactionFromUser = (uid, public_id) => {
 export const getRefOfConsumedTransactions = (uid) =>
   db.ref(`users/${uid}/consumed_transactions`);
 
-export const doCreateCharity = (id, account_number, email) =>
-  db.ref(`images/${id}`).set({
+export const doCreateCharity = (id, account_number, email, image) =>
+  db.ref('charities').push({
     public_id: id,
-    account_number: account_number,
-    email: email,
+    account_number,
+    email,
+    image,
   });
 
 export const doCreateUser = (id, username, email) => {

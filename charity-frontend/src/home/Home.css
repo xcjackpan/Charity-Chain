@@ -3,6 +3,8 @@
   margin: auto;
 }
 
+/* ============================== CharityList ============================== */
+
 .charity-list {
   margin: 36px 0;
 }
@@ -12,7 +14,7 @@
   position: relative;
 }
 
-.charity-list-scroll-container::after {
+/* .charity-list-scroll-container::after {
   display: flex;
   content:"";
   height: 100%;
@@ -20,7 +22,7 @@
   right: 0;
   background: linear-gradient(to right, rgba(0,0,0,0), #fff);
   position: absolute;
-}
+} */
 
 .charity-list-scroll {
   display: flex;
@@ -32,9 +34,46 @@
   display: none;
 }
 
+.charity-list-scroll-left {
+  background: linear-gradient(to left, rgba(0,0,0,0), #fff);
+  height: 100%;
+  width: 150px;
+  position: absolute;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.charity-list-scroll-right {
+  background: linear-gradient(to right, rgba(0,0,0,0), #fff);
+  height: 100%;
+  width: 150px;
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.charity-list-scroll-left svg, .charity-list-scroll-right svg {
+  margin: 0 16px;
+  height: 30px;
+  width: 30px;
+}
+
+/* ============================== Charity ============================== */
+
 .charity-list .charity-card {
   min-width: 200px;
   margin: 10px;
+}
+
+.charity-list .charity-card:hover {
+  box-shadow: 1px 1px 8px grey;
+  cursor: pointer;
 }
 
 .charity-list .charity-card .ant-card-body {
