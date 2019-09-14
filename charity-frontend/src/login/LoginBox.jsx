@@ -1,11 +1,17 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Avatar, Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Heart, User } from 'react-feather';
 import './Login.css';
 
 export default class LoginBox extends React.Component {
   render() {
     return (
       <div className="login-box">
+        {
+          this.props.isCharity ?
+            <Heart className="icon" size={100} /> :
+            <User className="icon" size={100} />
+        }
         <Form onSubmit={this.handleSubmit} className="login-form">
           <Form.Item>
             <Input

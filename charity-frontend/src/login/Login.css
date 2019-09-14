@@ -37,6 +37,14 @@
   height: 50vh;
 }
 
+.login-box .icon {
+  color: white;
+  border-radius: 5%;
+  background-color: #a9a9a9;
+  padding: 5%;
+  margin-bottom: 20px;
+}
+
 .login-box #login-options {
   display: flex;
   flex-direction: column;
@@ -50,8 +58,4 @@
 
 .login-box .back {
   width: 15vw;
-}
-
-.avatar {
-  color: white;
 }
