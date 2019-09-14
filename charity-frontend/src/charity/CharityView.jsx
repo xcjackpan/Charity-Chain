@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link} from 'react-router-dom';
 import td_auth from './td_auth';
 import { Button, Table, Layout, Modal, Spin } from 'antd';
 import CharitySider from './CharitySider';
@@ -6,7 +7,7 @@ import './CharityView.css';
 import axios from 'axios';
 import { wallet, firebase, auth, db } from '../configs';
 import { getRefOfCharities } from '../configs/db.js';
-const { Header, Sider, Content } = Layout;  
+const { Header, Sider, Content } = Layout;
 const {apiKey, initialCustomerId} = td_auth;
 const td_uri = 'https://api.td-davinci.com/api/';
 const config = {
@@ -159,7 +160,9 @@ export default class CharityView extends React.Component {
             <div className="top-bar">
               <span className="name">{this.state.identity.name}</span>
               <span className="credits">300 credits</span>
-              <Button className="logout" onClick={this.props.logOut}>Log out</Button>
+              <Link id="profile" to={`/`}>
+                <Button className="logout">Log out</Button>
+              </Link>
             </div>
           </Header>
           <Layout>

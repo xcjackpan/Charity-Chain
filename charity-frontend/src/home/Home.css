@@ -1,6 +1,42 @@
 .home {
-  width: 90vw;
+  width: 100vw;
   margin: auto;
+}
+
+.home .browse-container {
+  margin: 5vh 5vw;
+}
+
+.home .header {
+  width: 100vw;
+  background-color: #1890ff !important;
+}
+
+.home .top-bar {
+  color: white;
+  display: flex;
+  font-size: 24px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.home .top-bar a {
+  display: flex;
+  align-items: center;
+}
+
+.home .header h1 {
+  color: white;
+  margin: 0 0 0 1.5vw;
+}
+
+.home .header #username {
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: 4%;
 }
 
 /* ============================== CharityList ============================== */
