@@ -2,11 +2,17 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './login/Login';
 import Home from './home/Home';
-import './configs';
+import { firebase, auth, db } from './configs';
 import './App.css';
 import 'antd/dist/antd.css';
 
+async function testEndpoint() {
+  const users = await db.getEmailOfUser('1')
+    console.log(users);
+}
+
 function App() {
+  testEndpoint();
   return (
     <div className="App">
       <BrowserRouter>

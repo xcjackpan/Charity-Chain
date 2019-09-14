@@ -3,11 +3,11 @@ import { db } from './firebase';
 // User API
 
 
-export const onceGetUsers = () =>
+export const getListOfUsers = () =>
     db.ref('users').once('value');
 
 export const getSpecificUser = (uid) =>
-    db.ref('users/' + uid).once('value');
+    db.ref(`user/${uid}`).once('value');
 
 export const getRefOfCharities = () =>
     db.ref('charities');
