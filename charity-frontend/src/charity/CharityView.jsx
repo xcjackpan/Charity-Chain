@@ -5,6 +5,7 @@ import CharitySider from './CharitySider';
 import './CharityView.css';
 import axios from 'axios';
 
+import { doCreateCharity, getRefOfCharities } from '../configs/db.js';
 const { Header, Sider, Content } = Layout;  
 const {apiKey, initialCustomerId} = td_auth;
 const td_uri = 'https://api.td-davinci.com/api/';
@@ -64,6 +65,11 @@ const columns = [
 ];
 
 export default class CharityView extends React.Component {
+  componentDidMount() {
+    getRefOfCharities()
+  }
+
+  addCharity = () => doCreateCharity("id", 1234567890, "charity@unicef.org", 'base64')
 
   constructor(props) {
     super(props);
@@ -152,6 +158,7 @@ export default class CharityView extends React.Component {
           </Header>
           <Layout>
             <Content className="content">
+<<<<<<< HEAD
               {
                 this.state.loading ?
                   <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%"}}>
@@ -159,6 +166,10 @@ export default class CharityView extends React.Component {
                   </div> :
                 <Table rowSelection={rowSelection} dataSource={this.state.transactionData} columns={columns} />
               }
+=======
+              TRANSACTION HISTORY
+              <button onClick={this.addCharity}>Add Charity</button>
+>>>>>>> 7bac36963ced9234127e70eab4e9d147be447b1d
             </Content>
             <Sider width={400} className="sider">
               <CharitySider amount={`$${this.precise(this.state.amount, true)}`}

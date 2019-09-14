@@ -3,11 +3,17 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import CharityView from './charity/CharityView';
 import Login from './login/Login';
 import Home from './home/Home';
-import './configs';
+import { firebase, auth, db } from './configs';
 import './App.css';
 import 'antd/dist/antd.css';
 
+// async function testEndpoint() {
+//   const res = await db.incrementDonation('-LokjEwXV8gjG1Ut-8lU');
+//   console.log(res);
+// }
+
 function App() {
+  // testEndpoint();
   return (
     <div className="App">
       <BrowserRouter>
