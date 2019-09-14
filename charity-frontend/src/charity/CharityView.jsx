@@ -81,8 +81,7 @@ export default class CharityView extends React.Component {
       transactionData: [],
       selectedRowKeys: [],
     }
-    axios.get(`${td_uri}customers/${initialCustomerId}/transactions`,
-              config)
+    axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
       .then((res) => {
         let tmpArray = [];
         res.data.result.forEach((elem, index) => {
