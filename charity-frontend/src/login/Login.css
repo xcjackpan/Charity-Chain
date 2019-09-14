@@ -35,6 +35,7 @@
 .login-box {
   width: 20vw;
   height: 50vh;
+  text-align: center;
 }
 
 .login-box .icon {

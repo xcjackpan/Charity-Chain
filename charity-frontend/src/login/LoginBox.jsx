@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { Heart, User } from 'react-feather';
 import './Login.css';
 

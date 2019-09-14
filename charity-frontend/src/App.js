@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import CharityView from './charity/CharityView';
 import Login from './login/Login';
 import Home from './home/Home';
 import './App.css';
@@ -11,6 +12,7 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path="/login" component={Login} />
+          <Route path="/charity" component={CharityView} />
           {/* user and charity views */}
           <Route exact path="/" component={Home} />
         </Switch>
