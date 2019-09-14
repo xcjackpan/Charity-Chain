@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './login/Login';
 import Home from './home/Home';
+import './configs';
 import './App.css';
 import 'antd/dist/antd.css';
 
