@@ -1,0 +1,28 @@
+#charity-view-container {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+.header {
+  width: 100vw;
+}
+
+.top-bar {
+  color: white;
+  display: flex;
+  font-size: 24px;
+}
+
+.top-bar .credits {
+  margin-left: auto;
+}
+
+.sider {
+  height: 100vh;
+  background-color: #a9a9a9 !important;
+}
+
+.content {
+  height: 100vh;
+}
