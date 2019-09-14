@@ -138,6 +138,9 @@ export default class CharityView extends React.Component {
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
+      getCheckboxProps: record => ({
+        disabled: false, // Column configuration not to be checked
+      }),
     };
     return (
       <div id="charity-view-container">
@@ -158,7 +161,6 @@ export default class CharityView extends React.Component {
           </Header>
           <Layout>
             <Content className="content">
-<<<<<<< HEAD
               {
                 this.state.loading ?
                   <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%"}}>
@@ -166,10 +168,7 @@ export default class CharityView extends React.Component {
                   </div> :
                 <Table rowSelection={rowSelection} dataSource={this.state.transactionData} columns={columns} />
               }
-=======
-              TRANSACTION HISTORY
               <button onClick={this.addCharity}>Add Charity</button>
->>>>>>> 7bac36963ced9234127e70eab4e9d147be447b1d
             </Content>
             <Sider width={400} className="sider">
               <CharitySider amount={`$${this.precise(this.state.amount, true)}`}
