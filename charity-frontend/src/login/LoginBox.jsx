@@ -4,6 +4,27 @@ import { Heart, User } from 'react-feather';
 import './Login.css';
 
 export default class LoginBox extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: "",
+    }
+  }
+
+  updateUsername = (e) => {
+    this.setState({
+      username: e.target.value,
+    });
+  }
+
+  updatePassword = (e) => {
+    this.setState({
+      password: e.target.value,
+    });
+  }
+
   render() {
     return (
       <div className="login-box">
@@ -17,13 +38,16 @@ export default class LoginBox extends React.Component {
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="Username"
-            />,
+              onChange={this.updateUsername}
+            />
           </Form.Item>
           <Form.Item>
             <Input
               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              type="password"
               placeholder="Password"
-            />,
+              onChange={this.updatePassword}
+            />
           </Form.Item>
           <Form.Item>
             <div id="login-options">

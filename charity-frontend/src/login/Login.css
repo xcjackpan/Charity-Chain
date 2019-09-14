@@ -33,7 +33,7 @@
 }
 
 .login-box {
-  width: 30vw;
+  width: 20vw;
   height: 50vh;
 }
 
@@ -41,7 +41,7 @@
   color: white;
   border-radius: 5%;
   background-color: #a9a9a9;
-  padding: 5%;
+  padding: 5%;  
   margin-bottom: 20px;
 }
 

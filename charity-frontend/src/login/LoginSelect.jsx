@@ -8,12 +8,12 @@ const LoginSelect = (props) => {
       {
         props.isCharity ?
         <Heart className="icon"
-               size={300} 
+               size={250} 
                onClick={() => {
                  props.changeLogin(1);
                }}/> :
         <User className="icon"
-              size={300} 
+              size={250} 
               onClick={() => {
                 props.changeLogin(2);
               }} />
