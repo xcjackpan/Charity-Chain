@@ -8,8 +8,6 @@
 }
 
 .login-select {
-  width: 20vw;
-  height: 50vh;
   border-radius: 5%;
   display: flex;
   align-items: center;
@@ -19,12 +17,14 @@
 .login-select .icon {
   color: white;
   border-radius: 5%;
-  background-color: #a9a9a9;
-  padding: 20% 5%;
+  background-color: #1890ff;
+  padding: 60px;
+  transition: all .3s cubic-bezier(.645, .045, .355, 1);
 }
 
 .login-select .icon:hover {
   cursor: pointer;
+  background-color: #40a9ff;
 }
 
 .login-select .label {

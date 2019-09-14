@@ -71,6 +71,11 @@
   margin: 10px;
 }
 
+.charity-list .charity-card:hover {
+  box-shadow: 1px 1px 8px grey;
+  cursor: pointer;
+}
+
 .charity-list .charity-card .ant-card-body {
   padding: 0;
 }

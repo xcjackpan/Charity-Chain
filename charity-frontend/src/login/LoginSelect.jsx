@@ -1,6 +1,6 @@
 import React from 'react';
-import './Login.css';
 import { Heart, User } from 'react-feather';
+import { Button } from 'antd';
 
 const LoginSelect = (props) => {
   return (
@@ -8,12 +8,12 @@ const LoginSelect = (props) => {
       {
         props.isCharity ?
         <Heart className="icon"
-               size={300} 
+               size={250} 
                onClick={() => {
                  props.changeLogin(1);
                }}/> :
         <User className="icon"
-              size={300} 
+              size={250} 
               onClick={() => {
                 props.changeLogin(2);
               }} />
