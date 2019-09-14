@@ -38,7 +38,7 @@ export default class Home extends React.Component {
     return (
       <div className="home">
         <h1>CharityChain</h1>
-        <Link to="/profile"><div><User /><span>User Profile</span></div></Link>
+        <Link to={`/user/${this.props.match.params.id}/profile`}><div><User /><span>User Profile</span></div></Link>
         <Select defaultValue="popular" onChange={this.changeSort} style={{ width: 150 }}>
           <Select.Option value="popular">Popular</Select.Option>
           <Select.OptGroup label="Spending Category">
