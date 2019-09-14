@@ -4,7 +4,6 @@ import CharityView from './charity/CharityView';
 import Login from './login/Login';
 import Home from './home/Home';
 import ProfileContainer from './profile/ProfileContainer';
-import { firebase, auth, db } from './configs';
 import './App.css';
 import 'antd/dist/antd.css';
 
