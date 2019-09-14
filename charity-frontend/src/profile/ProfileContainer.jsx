@@ -3,6 +3,11 @@ import ProfileView from './ProfileView';
 import { db } from '../configs/index';
 
 export default class ProfileContainer extends Component {
+
+    constructor(props) {
+        super(props);
+    }
+
     state = {
         transactions: {}
     }
@@ -12,7 +17,7 @@ export default class ProfileContainer extends Component {
         db.getRefOfTransactions('1')
             .then(res => this.setState({ transactions: res })); // TODO: make it user ID
         return (
-            <ProfileView transactions={this.state.transactions} />
+            <ProfileView {...this.props} transactions={this.state.transactions} />
         )
     }
 }

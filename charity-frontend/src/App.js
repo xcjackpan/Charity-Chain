@@ -4,7 +4,7 @@ import CharityView from './charity/CharityView';
 import Login from './login/Login';
 import Home from './home/Home';
 import ProfileContainer from './profile/ProfileContainer';
-import { firebase, auth, db } from './configs';
+import history from "./history";
 import './App.css';
 import 'antd/dist/antd.css';
 
@@ -15,18 +15,35 @@ import 'antd/dist/antd.css';
 
 function App() {
   // testEndpoint();
+
+  let logIn = (identityObj, charity) => {
+    // Name will be a userID passed into component
+    // Component, when mounted, makes a query to get all the informatin it needs about itself
+    // We query for the details (money) associated with the userID
+    if (!charity) {
+      history.push(`/user/${identityObj.username}/browse`);
+    } else {
+      history.push(`/charity/${identityObj.account_number}`);
+    }
+    window.location.reload()
+  }
+
+  let logOut = () => {
+    history.push(`/`);
+    window.location.reload()
+  }
+
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter history={history}>
         <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/charity" component={CharityView} />
-          <Route path="/profile" component={ProfileContainer} />
-          {/* user and charity views */}
-          <Route exact path="/" component={Home} />
+          <Route path="/user/:id/browse" render={(props) => <Home {...props} logOut={logOut} />} />
+          <Route path="/user/:id/profile" render={(props) => <ProfileContainer {...props} logOut={logOut} />} /> 
+          <Route path="/charity/:id" render={(props) => <CharityView {...props} logOut={logOut} />} />
+
+          <Route exact path="/" render={() => <Login logIn={logIn} />} />
         </Switch>
       </BrowserRouter>
-      
     </div>
   );
 }
