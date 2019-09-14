@@ -11,15 +11,27 @@ export default class ProfileView extends Component {
 
   render() {
     const { transactions, match } = this.props;
+    console.log(transactions);
     return (
       <div className='profile-container'>
-        <Link to={`/user/${this.props.match.params.id}/browse`}><div><Grid /><span>Browse Charities</span></div></Link>
+        <Link to={`/user/${match.params.id}/browse`}><div><Grid /><span>Browse Charities</span></div></Link>
         <div className='profile-charities-container'>
           {transactions ?
-            Object.keys(transactions).map(transaction => <CharityBox name={'1'} />) :
-            null}
+            transactions.map(transaction => 
+              <CharityBox
+                name={'1'}
+                transactionId={transaction.transactionId}
+                amount={transaction.amount}
+                timestamp={transaction.timestamp}
+              />) : null}
         </div>
       </div>
     );
   }
+}
+
+const transaction = {
+  amount: 0,
+  sentTo: '',
+  timestamp: new Date()
 }

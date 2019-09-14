@@ -17,8 +17,8 @@ const CharityBox = props =>
         <Meta
             description={
                 <Descriptions title={props.name} column={1}>
-                    <Descriptions.Item label='Transaction'>Props Transaction ID</Descriptions.Item>
-                    <Descriptions.Item label='Time'>Props Transaction Time</Descriptions.Item>
+                    <Descriptions.Item label='Transaction'>{props.transactionId}</Descriptions.Item>
+                    <Descriptions.Item label='Time'>{props.timestamp.toDateString()}</Descriptions.Item>
                     <Descriptions.Item label='Amount'>Props Transaction Amount</Descriptions.Item>
                     <Descriptions.Item label='Category'>Props Transaction Category</Descriptions.Item>
                 </Descriptions>

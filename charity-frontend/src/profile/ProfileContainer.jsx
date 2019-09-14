@@ -4,20 +4,27 @@ import { db } from '../configs/index';
 
 export default class ProfileContainer extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
+    this.state = {
+        transactions: []
     }
+  }
 
-    state = {
-        transactions: {}
-    }
+  componentDidMount() {
+    db.getRefOfTransactions('1') // TODO: make this user ID
+      .then(res => Object.keys(res).map(key => res[key])
+        .map(transaction => ({
+          ...transaction,
+          timestamp: new Date(transaction.timestamp)
+        }))
+        .sort((a, b) => b.timestamp - a.timestamp))
+      .then(res => this.setState({ transactions: res }));
+  }
 
-    render() {
-        // returns as object with keys
-        db.getRefOfTransactions('1')
-            .then(res => this.setState({ transactions: res })); // TODO: make it user ID
-        return (
-            <ProfileView {...this.props} transactions={this.state.transactions} />
-        )
-    }
+  render() {
+    return (
+        <ProfileView { ...this.props } transactions={this.state.transactions} />
+    );
+  }
 }
