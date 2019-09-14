@@ -1,6 +1,7 @@
 import React from 'react';
 import td_auth from './td_auth';
-import { Checkbox, Table, Layout } from 'antd';
+import { Table, Layout, Modal, Spin } from 'antd';
+import CharitySider from './CharitySider';
 import './CharityView.css';
 import axios from 'axios';
 
@@ -35,6 +36,8 @@ source: "POS"
 type: "CreditCardTransaction"
 */
 
+const { confirm } = Modal;
+
 const columns = [
   {
     title: 'Date',
@@ -65,6 +68,8 @@ export default class CharityView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      amount: 0,
+      loading: true,
       transactionData: [],
       selectedRowKeys: [],
     }
@@ -73,18 +78,53 @@ export default class CharityView extends React.Component {
       .then((res) => {
         let tmpArray = [];
         res.data.result.forEach((elem, index) => {
-          let tmpTransaction = elem;
-          tmpTransaction.key = index;
-          tmpTransaction.location = elem.locationCity ? `${elem.locationCity}, ${elem.locationCountry}` : "N/A";
-          tmpArray.push(elem);
+          if (elem.currencyAmount > 0) {
+            let tmpTransaction = elem;
+            tmpTransaction.currencyAmount = this.precise(tmpTransaction.currencyAmount, true);
+            tmpTransaction.key = index;
+            tmpTransaction.location = elem.locationCity ? `${elem.locationCity}, ${elem.locationCountry}` : "N/A";
+            tmpArray.push(elem);
+          }
         });
-        this.setState({transactionData: tmpArray}, () => {console.log(this.state.transactionData)})
+        this.setState({transactionData: tmpArray, loading: false})
       })
   }
 
+  precise = (num, returnAsString) => {
+    let ret = parseFloat(Math.round(num * 100) / 100).toFixed(2);
+    return returnAsString ? ret : parseFloat(ret);
+  }
+
   onSelectChange = selectedRowKeys => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    this.setState({ selectedRowKeys });
+    let amount = 0;
+    selectedRowKeys.forEach((elem) => {
+      amount += this.precise(this.state.transactionData[elem].currencyAmount, false);
+    })
+    this.setState({ selectedRowKeys, amount: amount });
+  };
+
+  resetCheckboxes = () => {
+    this.setState({
+      selectedRowKeys: [],
+      amount: 0,
+    })
+  }
+
+  confirmModal = (amount) => {
+    confirm({
+      title: 'Confirm reimbursement',
+      content: `Are you sure you want to reimburse ${amount}? This can't be undone!`,
+      okText: 'Yes',
+      cancelText: 'Let me think about it',
+      width: "30vw",
+      maskClosable: true,
+      onOk() {
+        console.log('OK');
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   };
 
   render() {
@@ -95,6 +135,14 @@ export default class CharityView extends React.Component {
     };
     return (
       <div id="charity-view-container">
+        <Modal
+          title="Basic Modal"
+          visible={this.state.showConfirm}
+          onOk={this.toggleConfirm}
+          onCancel={this.toggleConfirm}
+        >
+          HEY
+        </Modal>
         <Layout>
           <Header className="header">
             <div className="top-bar">
@@ -104,10 +152,18 @@ export default class CharityView extends React.Component {
           </Header>
           <Layout>
             <Content className="content">
-              <Table rowSelection={rowSelection} dataSource={this.state.transactionData} columns={columns} />
+              {
+                this.state.loading ?
+                  <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%"}}>
+                    <Spin />
+                  </div> :
+                <Table rowSelection={rowSelection} dataSource={this.state.transactionData} columns={columns} />
+              }
             </Content>
             <Sider width={400} className="sider">
-              SIDER INFO BAR
+              <CharitySider amount={`$${this.precise(this.state.amount, true)}`}
+                            reset={this.resetCheckboxes}
+                            openModal={this.confirmModal}/>
             </Sider>
           </Layout>
         </Layout>
