@@ -82,8 +82,7 @@ export default class CharityView extends React.Component {
       transactionData: [],
       selectedRowKeys: [],
     }
-    axios.get(`${td_uri}customers/${initialCustomerId}/transactions`,
-              config)
+    axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
       .then((res) => {
         let tmpArray = [];
         res.data.result.forEach((elem, index) => {
@@ -150,7 +149,7 @@ export default class CharityView extends React.Component {
         <Layout>
           <Header className="header">
             <div className="top-bar">
-              <span className="name">UNICEF</span>
+              <span className="name">{this.props.match.params.id}</span>
               <span className="credits">300 credits</span>
               <Button className="logout" onClick={this.props.logOut}>Log out</Button>
             </div>
