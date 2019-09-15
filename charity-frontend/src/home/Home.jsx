@@ -56,7 +56,17 @@ export default class Home extends React.Component {
           // console.log(sum)
           if (sum) {
             Object.keys(charity.aggregate_donations)
-              .forEach(key => { charity.aggregate_donations[key] = Math.round((charity.aggregate_donations[key] / sum) * 100) })
+              .forEach(key => {
+                charity.aggregate_donations[key] = Math.round((charity.aggregate_donations[key] / sum) * 100);
+              });
+          }
+          if (charity.aggregate_donations) {
+            Object.keys(charity.aggregate_donations).forEach(key => { 
+              if (charity.aggregate_donations[key] === 0) {
+                console.log(key)
+                delete charity.aggregate_donations[key];
+              }
+            })
           }
           return charity;
         })
