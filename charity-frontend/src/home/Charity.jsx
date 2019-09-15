@@ -26,7 +26,7 @@ export default class Charity extends React.Component {
     if (this.state.isDonating) {
       console.log('donate')
       console.log(this.state.amount)
-      wallet.sendToCharity(this.state.amount, this.props.user.address, this.props.charity.address)
+      wallet.sendToCharity(this.state.amount * 100, this.props.user.address, this.props.charity.address)
         .then(res => console.log(res));
       this.closeModal();
     } else {
@@ -49,7 +49,7 @@ export default class Charity extends React.Component {
     const { aggregate_donations } = charity;
     const data = aggregate_donations ?
       Object.keys(aggregate_donations).map(key => ({ name: key, value: aggregate_donations[key] })) : [];
-    console.log(data)
+    // console.log(data)
     const footer = (
       <div>
         {this.state.isDonating &&
