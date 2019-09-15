@@ -135,3 +135,13 @@
 .recharts-sector:hover {
   opacity: 0.7;
 }
+
+.donate-input {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+
+.donate-input div {
+  margin-right: 8px;
+}
