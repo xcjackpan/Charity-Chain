@@ -123,13 +123,18 @@
   padding: 0;
 }
 
+.charity-modal .ant-modal-content {
+  width: fit-content;
+}
+
 .charity-modal .ant-modal-body {
   display: flex;
+  width: 650px;
 }
 
 .chart-container {
-  height: 400px;
-  width: 500px;
+  height: 300px;
+  width: 100%;
 }
 
 .recharts-sector:hover {

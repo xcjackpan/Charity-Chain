@@ -2,23 +2,14 @@ import React from 'react';
 import { Card, Modal, Button, Input } from 'antd';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { wallet } from '../configs';
-
-    const data = [
-      { name: 'Group A', value: 400 },
-      { name: 'Group B', value: 300 },
-      { name: 'Group C', value: 300 },
-      { name: 'Group D', value: 200 },
-      { name: 'Group A', value: 400 },
-      { name: 'Group B', value: 300 },
-    ];
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+    
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#f5222d'];
 
 export default class Charity extends React.Component {
   constructor() {
     super();
     this.state = {
       visible: false,
-      // isHovering: false,
       isDonating: false,
       amount: '',
       isLoading: false,
@@ -51,10 +42,14 @@ export default class Charity extends React.Component {
   
   // onMouseOut= () => { this.setState({ isHovering: false }) }
 
-  renderLabel = (entry) => `${entry.name}, ${entry.value}%`
+  renderLabel = (entry) => `${entry.name}, $${entry.value}`
   
   render() {
     const { charity } = this.props;
+    const { aggregate_donations } = charity;
+    const data = aggregate_donations ?
+      Object.keys(aggregate_donations).map(key => ({ name: key, value: aggregate_donations[key] })) : [];
+    console.log(data)
     const footer = (
       <div>
         {this.state.isDonating &&

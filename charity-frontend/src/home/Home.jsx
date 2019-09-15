@@ -38,14 +38,42 @@ export default class Home extends React.Component {
         Object.keys(charities).forEach(category => {
           if (this.state.sort === 'popular') {
             charities[category] = _.reverse(_.sortBy(charities[category], ['donation_count']));
+          } else {
+            charities[category] = _.reverse(_.sortBy(charities[category], ['aggregate_donations.Auto and Transport']))
           }
         })
+        console.log(charities);
         this.setState({ charities });
       });
   }
 
-  changeSort = (e) => {
-    this.setState({ sort: e.target.value })
+  // componentDidUpdate() {
+  //   const charities = this.state.charities
+  //   Object.keys(charities).forEach(category => {
+  //     if (this.state.sort === 'popular') {
+  //       charities[category] = _.reverse(_.sortBy(charities[category], ['donation_count']));
+  //     } else {
+  //       charities[category] = _.reverse(_.sortBy(charities[category], ['aggregate_donations.Auto and Transport']))
+  //     }
+  //   })
+  //   console.log(charities);
+  //   this.setState({ charities });
+  // }
+
+  changeSort = (value) => {
+    console.log(value)
+    this.setState({ sort: value }, () => {
+      const charities = this.state.charities
+      Object.keys(charities).forEach(category => {
+        if (this.state.sort === 'popular') {
+          charities[category] = _.reverse(_.sortBy(charities[category], ['donation_count']));
+        } else {
+          charities[category] = _.sortBy(charities[category], [`aggregate_donations.${this.state.sort}`])
+        }
+      })
+      console.log(charities);
+      this.setState({ charities });
+    }) 
   }
 
   render() {
@@ -71,8 +99,10 @@ export default class Home extends React.Component {
             <Select defaultValue="popular" onChange={this.changeSort} style={{ width: 150 }}>
               <Select.Option value="popular">Popular</Select.Option>
               <Select.OptGroup label="Spending Category">
-                <Select.Option value="food">Food</Select.Option>
-                <Select.Option value="retail">Retail</Select.Option>
+                <Select.Option value="Auto and Transport">Auto and Transport</Select.Option>
+                <Select.Option value="Bills and Utilities">Bills and Utilities</Select.Option>
+                <Select.Option value="Food and Dining">Food and Dining</Select.Option>
+                <Select.Option value="Home">Home</Select.Option>
               </Select.OptGroup>
             </Select>
           </div>

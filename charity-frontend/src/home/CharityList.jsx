@@ -23,7 +23,7 @@ export default class CharityList extends React.Component {
       const current = this.listScroll.current;
       if (current.scrollLeft === 0 && this.state.left) this.setState({ left: false });
       if (current.scrollLeft !== 0 && !this.state.left) this.setState({ left: true });
-      if (current.scrollLeft === current.scrollWidth - current.offsetWidth && this.state.right) this.setState({ right: false });
+      if (current.scrollLeft >= current.scrollWidth - current.offsetWidth && this.state.right) this.setState({ right: false });
       if (current.scrollLeft < current.scrollWidth - current.offsetWidth && !this.state.right) this.setState({ right: true });
     }
   }
