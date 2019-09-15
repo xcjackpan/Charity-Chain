@@ -180,20 +180,12 @@ export default class CharityView extends React.Component {
       this.setState({balance: res.balance})
     })
     */
-    let tmpArray = [];
-    this.state.transactionData.forEach((transactionElem) => {
-      let flag = false;
-      this.state.selectedRowKeys.forEach((rowIndex) => {
-        if (transactionElem.id === this.state.transactionData[rowIndex].id) {
-          flag = true;
-        }
-      });
-      if (!flag) {
-        tmpArray.push(transactionElem);
-      }
-    });
-    this.setState({balance: ((this.state.balance * 100) - amount)/100, 
-                   transactionData: tmpArray})
+    console.log(this.state.transactionData);
+    let selected_rows = this.state.selectedRowKeys.map(x => this.state.transactionData[x].id);
+    let filtered_transaction_data = this.state.transactionData.filter(x => !selected_rows.includes(x.id));
+    console.log(filtered_transaction_data);
+
+    this.setState({balance: ((this.state.balance * 100) - amount)/100, transactionData: filtered_transaction_data})
     let aggregate_donations = {};
     this.state.selectedRowKeys.forEach((elem) => {
       let type = this.state.transactionData[elem].categoryTags[0];
@@ -211,7 +203,7 @@ export default class CharityView extends React.Component {
       wallet.reimburseTransaction(this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount), 
                                   this.state.identity.address, 
                                   this.state.transactionData[elem].id,
-                                  this.state.transactionData[elem].categoryTags[0]).then((res) =>{
+                                  this.state.transactionData[elem].categoryTags[0]).then((res) => {
                                     console.log("Transaction result : ", res)
                                   })
     })
