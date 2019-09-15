@@ -28,18 +28,13 @@ function App() {
     window.location.reload()
   }
 
-  let logOut = () => {
-    history.push(`/`);
-    window.location.reload()
-  }
-
   return (
     <div className="App">
       <BrowserRouter history={history}>
         <Switch>
-          <Route path="/user/:id/browse" render={(props) => <Home {...props} logOut={logOut} />} />
-          <Route path="/user/:id/profile" render={(props) => <ProfileContainer {...props} logOut={logOut} />} /> 
-          <Route path="/charity/:id" render={(props) => <CharityView {...props} logOut={logOut} />} />
+          <Route path="/user/:id/browse" render={(props) => <Home {...props} />} />
+          <Route path="/user/:id/profile" render={(props) => <ProfileContainer {...props} />} /> 
+          <Route path="/charity/:id" render={(props) => <CharityView {...props} />} />
 
           <Route exact path="/" render={() => <Login logIn={logIn} />} />
         </Switch>
