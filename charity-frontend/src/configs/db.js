@@ -18,6 +18,35 @@ export const doAppendToAggregateDonations = (uid, donations) => {
     });
 }
 
+export const createInterimReimbursement = (reimbursement) => {
+    return db.ref('interim_reimbursement').child(reimbursement.td_transaction_record).set(reimbursement);
+}
+
+export const removeInterimReimbursement = (transaction_record) => {
+    return db.ref(`interim_reimbursement/${transaction_record}`).remove();
+}
+
+export const getRefOfInterimReimbursements = () => {
+    return db.ref('interim_reimbursement');
+}
+
+export const incrementNonce = () => {
+    return db.ref('nonce').once('value').then(val => db.ref('nonce').set(val.val() + 1));
+}
+
+export const getNonce = () => {
+    return db.ref('nonce').once('value').then(snapshot => {
+        return snapshot.val()
+    });
+}
+
+export const getAllInterimReimbursements = () => {
+    return db.ref('interim_reimbursement').once('value')
+    .then (snapshot => {
+        return snapshot.val();
+    });
+}
+
 export const getListOfUsers = () => {
   return db.ref('users').once('value')
     .then(snapshot => {

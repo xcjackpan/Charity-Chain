@@ -68,19 +68,20 @@ const columns = [
 export default class CharityView extends React.Component {
 
   componentDidMount() {
+    
     return getRefOfCharities().then(res => {
       const charitiesArr = Object.values(res);
       const keysArr = Object.keys(res);
       let len = charitiesArr.length;
       for (let i = 0; i < len; i++) {
         if (charitiesArr[i].account_number.toString() === this.props.match.params.id) {
+            let tmpArray = [];
           let identity = charitiesArr[i];
           identity.key = keysArr[i];
           this.setState({ identity: charitiesArr[i] }, () => {
             axios.get(`${td_uri}customers/${this.state.identity.td_id}/transactions`, config)
             .then((res) => {
               wallet.getAllReimbursements().then((reimbursements) => {
-                let tmpArray = [];
                 let i = 0;
                 res.data.result.forEach((elem) => {
                   let flag = false;
@@ -89,7 +90,6 @@ export default class CharityView extends React.Component {
                   for (let i = 0; i < len; i++) {
                     if ((elem.id === reimbursements.data[i].tdTransactionRecord) &&
                         (reimbursements.data[i].reimburseTo === this.state.identity.address)) {
-                      console.log(elem)
                       flag = true;
                       break;
                     }
@@ -104,13 +104,18 @@ export default class CharityView extends React.Component {
                     tmpArray.push(elem);
                   }
                 });
-                this.setState({transactionData: tmpArray, loading: false})
+                wallet.getBalance(this.state.identity.address).then((res) => {
+                    db.getAllInterimReimbursements().then(data => {     
+                        let amount = 0;
+                        let data_id = [];
+                        Object.keys(data).map(x => { amount += data[x].amount_spent; data_id.push(data[x].td_transaction_record); });
+                        let filtered_transaction_data = tmpArray.filter(x => !data_id.includes(x.id));
+                        this.setState({ balance: ((res.balance * 100) - amount)/100, transactionData: filtered_transaction_data, loading : false })
+                    });
+                })
               })
+            });
             })
-            wallet.getBalance(this.state.identity.address).then((res) => {
-              this.setState({balance: res.balance/100})
-            })
-          });
           break;
         }
       }
@@ -141,8 +146,9 @@ export default class CharityView extends React.Component {
 
   onSelectChange = selectedRowKeys => {
     let amount = 0;
+    console.log(selectedRowKeys);
     selectedRowKeys.forEach((elem) => {
-      amount += parseFloat(this.state.transactionData[elem].currencyAmount);
+      amount += parseFloat(this.state.transactionData[elem - 1].currencyAmount);
     })
     this.setState({ selectedRowKeys, amount: this.precise(amount, false) });
   };
@@ -175,17 +181,16 @@ export default class CharityView extends React.Component {
   reimburse = (amount) => {
     this.resetCheckboxes();
     amount = this.convertCurrencyAmountToInt(amount.substr(1));
-    /*
-    wallet.getBalance(this.state.identity.address).then((res) => {
-      this.setState({balance: res.balance})
-    })
-    */
-    console.log(this.state.transactionData);
     let selected_rows = this.state.selectedRowKeys.map(x => this.state.transactionData[x].id);
     let filtered_transaction_data = this.state.transactionData.filter(x => !selected_rows.includes(x.id));
-    console.log(filtered_transaction_data);
-
-    this.setState({balance: ((this.state.balance * 100) - amount)/100, transactionData: filtered_transaction_data})
+    wallet.getBalance(this.state.identity.address).then(res => {
+        db.getAllInterimReimbursements().then(data => {     
+            let data_id = []
+            Object.keys(data).map(x => { amount += data[x].amount_spent; data_id.push(data[x].td_transaction_record); });
+            filtered_transaction_data = filtered_transaction_data.filter(x => !data_id.includes(x.id));
+            this.setState({balance: ((res.balance * 100) - amount)/100, transactionData: filtered_transaction_data})
+        });
+    });
     let aggregate_donations = {};
     this.state.selectedRowKeys.forEach((elem) => {
       let type = this.state.transactionData[elem].categoryTags[0];
@@ -196,16 +201,21 @@ export default class CharityView extends React.Component {
       }
     })
     this.state.selectedRowKeys.forEach((elem) => {
-      console.log("amount: " + this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount))
-      console.log("address: " + this.state.identity.address)
-      console.log("td_id: " + this.state.transactionData[elem].id)
-      console.log("tag: " + this.state.transactionData[elem].categoryTags[0])
-      wallet.reimburseTransaction(this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount), 
+    db.createInterimReimbursement({ 
+        amount_spent : this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount), 
+        charity : this.state.identity.address, 
+        td_transaction_record : this.state.transactionData[elem].id, 
+        category : this.state.transactionData[elem].categoryTags[0]}).then(res => console.log("completed"));
+        db.getNonce().then(val => {
+            wallet.reimburseTransaction(this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount), 
                                   this.state.identity.address, 
                                   this.state.transactionData[elem].id,
-                                  this.state.transactionData[elem].categoryTags[0]).then((res) => {
-                                    console.log("Transaction result : ", res)
-                                  })
+                                  this.state.transactionData[elem].categoryTags[0], 
+                                    val + 1).then((res) => {
+                                    console.log("Transaction result : ", res);
+                                  });
+            db.incrementNonce().then(a => {});
+        })
     })
     doAppendToAggregateDonations(this.state.identity.key, aggregate_donations).then((res) => {
       // console.log(res);
@@ -221,6 +231,7 @@ export default class CharityView extends React.Component {
         disabled: false, // Column configuration not to be checked
       }),
     };
+
     return (
       <div id="charity-view-container">
         <Layout>
