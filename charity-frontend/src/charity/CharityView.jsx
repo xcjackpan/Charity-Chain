@@ -76,38 +76,6 @@ export default class CharityView extends React.Component {
         if (charitiesArr[i].account_number.toString() === this.props.match.params.id) {
           let identity = charitiesArr[i];
           identity.key = keysArr[i];
-<<<<<<< HEAD
-          // this.setState({ identity: charitiesArr[i] }, () => {
-          //   axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
-          //   .then((res) => {
-          //     wallet.getAllReimbursements().then((reimbursements) => {
-          //       console.log(reimbursements)
-          //       let tmpArray = [];
-          //       let i = 0;
-          //       res.data.result.forEach((elem) => {
-          //         let find = reimbursements.data.find((reimbursementRecord) => {
-          //           const condition = (elem.id === reimbursementRecord.tdTransactionRecord) &&
-          //                             (reimbursementRecord.reimburseTo === this.state.identity.address);
-          //           return condition;
-          //         })
-
-          //         if (!find && elem.currencyAmount > 0) {
-          //           let tmpTransaction = elem;
-          //           tmpTransaction.currencyAmount = this.precise(tmpTransaction.currencyAmount, true);
-          //           tmpTransaction.key = i;
-          //           i += 1;
-          //           tmpTransaction.location = elem.locationCity ? `${elem.locationCity}, ${elem.locationCountry}` : "N/A";
-          //           tmpArray.push(elem);
-          //         }
-          //       });
-          //       this.setState({transactionData: tmpArray, loading: false})
-          //     })
-          //   })
-          //   wallet.getBalance(this.state.identity.address).then((res) => {
-          //     this.setState({balance: res.balance/100})
-          //   })
-          // });
-=======
           this.setState({ identity: charitiesArr[i] }, () => {
             axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
             .then((res) => {
@@ -143,7 +111,6 @@ export default class CharityView extends React.Component {
               this.setState({balance: res.balance/100})
             })
           });
->>>>>>> 79786a5ef9a104ef816e017609b463c0bef45bc5
           break;
         }
       }
