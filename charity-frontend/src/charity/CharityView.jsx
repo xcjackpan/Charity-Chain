@@ -173,7 +173,12 @@ export default class CharityView extends React.Component {
       wallet.reimburseTransaction(this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount), 
                                   this.state.identity.key, 
                                   this.state.transactionData[elem].id,
-                                  this.state.transactionData[elem].categoryTags[0])
+                                  this.state.transactionData[elem].categoryTags[0]).then(() =>{
+                                    this.resetCheckboxes();
+                                    wallet.getBalance(this.state.identity.address).then((res) => {
+                                      this.setState({balance: res.balance})
+                                    })
+                                  })
     })
     doAppendToAggregateDonations(this.state.identity.key, aggregate_donations).then((res) => {
       // console.log(res);
@@ -214,6 +219,7 @@ export default class CharityView extends React.Component {
             </Content>
             <Sider width={400} className="sider">
               <CharitySider amount={`$${this.precise(this.state.amount, true)}`}
+                            balance={this.state.balance}
                             reset={this.resetCheckboxes}
                             openModal={this.confirmModal}/>
             </Sider>
