@@ -2,10 +2,6 @@ import React from 'react';
 import { Button } from 'antd';
 
 export default class CharitySider extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const disableButtons = this.props.amount === "$0.00";
     return (

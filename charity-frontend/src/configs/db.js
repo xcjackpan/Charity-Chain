@@ -2,7 +2,6 @@ import { db } from './firebase';
 
 // User API
 
-
 export const getListOfUsers = () => {
   return db.ref('users').once('value')
     .then(snapshot => {

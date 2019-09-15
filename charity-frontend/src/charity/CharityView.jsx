@@ -1,12 +1,13 @@
 import React from 'react';
+import { Link} from 'react-router-dom';
 import td_auth from './td_auth';
 import { Button, Table, Layout, Modal, Spin } from 'antd';
 import CharitySider from './CharitySider';
 import './CharityView.css';
 import axios from 'axios';
-
-import { doCreateCharity, getRefOfCharities } from '../configs/db.js';
-const { Header, Sider, Content } = Layout;  
+import { wallet, firebase, auth, db } from '../configs';
+import { getRefOfCharities } from '../configs/db.js';
+const { Header, Sider, Content } = Layout;
 const {apiKey, initialCustomerId} = td_auth;
 const td_uri = 'https://api.td-davinci.com/api/';
 const config = {
@@ -64,25 +65,33 @@ const columns = [
   },
 ];
 
-const base64 = "";
-
 export default class CharityView extends React.Component {
   componentDidMount() {
-    getRefOfCharities()
+    return getRefOfCharities().then(res => {
+      const charitiesArr = Object.values(res);
+      charitiesArr.forEach((elem) => {
+        if (elem.account_number.toString() === this.props.match.params.id) {
+          this.setState({ identity: elem });
+        }
+      })
+      return;
+    })
   }
 
+  // wallet.get('/getBalanceOfWallet')
   // addCharity = () => doCreateCharity("id", 4242584820, "donate@wwf.com", "Animals", base64)
 
   constructor(props) {
     super(props);
     this.state = {
+      identity: {},
       amount: 0,
+      name: "",
       loading: true,
       transactionData: [],
       selectedRowKeys: [],
     }
-    axios.get(`${td_uri}customers/${initialCustomerId}/transactions`,
-              config)
+    axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
       .then((res) => {
         let tmpArray = [];
         res.data.result.forEach((elem, index) => {
@@ -149,9 +158,11 @@ export default class CharityView extends React.Component {
         <Layout>
           <Header className="header">
             <div className="top-bar">
-              <span className="name">UNICEF</span>
+              <span className="name">{this.state.identity.name}</span>
               <span className="credits">300 credits</span>
-              <Button className="logout">Log out</Button>
+              <Link id="profile" to={`/`}>
+                <Button className="logout">Log out</Button>
+              </Link>
             </div>
           </Header>
           <Layout>
