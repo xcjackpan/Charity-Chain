@@ -17,6 +17,7 @@
 }
 
 .top-bar .credits {
+  font-size: 20px;
   margin-left: auto;
 }
 
@@ -24,6 +25,11 @@
   margin-left: 5%;
   background-color: transparent;
   color: white;
+}
+
+.top-bar a {
+  display: flex;
+  align-items: center;
 }
 
 .sider {

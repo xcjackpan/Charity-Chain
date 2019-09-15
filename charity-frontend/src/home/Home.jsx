@@ -56,7 +56,7 @@ export default class Home extends React.Component {
             <div className="top-bar">
               <h1>CharityChain</h1>
               <span id="username">{this.props.match.params.id}</span>
-              <Link style={{ marginRight: "2%" }}to={`/user/${this.props.match.params.id}/profile`}>
+              <Link style={{ marginRight: "2%" }} to={`/user/${this.props.match.params.id}/profile`}>
                 <Button className="logout">My Profile</Button>
               </Link>
               <Link to={`/`}>
@@ -66,13 +66,16 @@ export default class Home extends React.Component {
           </Header>
         </Layout>
         <div className="browse-container">
-          <Select defaultValue="popular" onChange={this.changeSort} style={{ width: 150 }}>
-            <Select.Option value="popular">Popular</Select.Option>
-            <Select.OptGroup label="Spending Category">
-              <Select.Option value="food">Food</Select.Option>
-              <Select.Option value="retail">Retail</Select.Option>
-            </Select.OptGroup>
-          </Select>
+          <div className="sort-container">
+            <span style={{ marginRight: "8px" }}>Sort By</span>
+            <Select defaultValue="popular" onChange={this.changeSort} style={{ width: 150 }}>
+              <Select.Option value="popular">Popular</Select.Option>
+              <Select.OptGroup label="Spending Category">
+                <Select.Option value="food">Food</Select.Option>
+                <Select.Option value="retail">Retail</Select.Option>
+              </Select.OptGroup>
+            </Select>
+          </div>
           {Object.keys(this.state.charities)
             .map(category => <CharityList key={category} category={category} charities={this.state.charities[category]} sort={this.state.sort} />)}
         </div>

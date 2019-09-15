@@ -25,7 +25,7 @@ export default class Charity extends React.Component {
 
   closeModal = () => { this.setState({ visible: false }) }
 
-  onMouseOver= () => { console.log('mouse'); this.setState({ isHovering: true }) }
+  onMouseOver= () => { this.setState({ isHovering: true }) }
   
   onMouseOut= () => { this.setState({ isHovering: false }) }
 
