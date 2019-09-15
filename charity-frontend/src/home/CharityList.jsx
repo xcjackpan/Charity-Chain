@@ -29,14 +29,14 @@ export default class CharityList extends React.Component {
   }
 
   render() {
-    const { category, charities } = this.props;
+    const { category, charities, user } = this.props;
     return (
       <div className="charity-list">
         <h2>{category}</h2>
         <div className="charity-list-scroll-container">
           {this.state.left && <div className="charity-list-scroll-left"><ChevronLeft /></div>}
           <div className="charity-list-scroll" ref={this.listScroll} onScroll={this.onScrollList}>
-            {charities.map(charity => <Charity charity={charity} key={charity.td_id}/>)}
+            {charities.map(charity => <Charity charity={charity} user={user} key={charity.td_id}/>)}
           </div>
           {this.state.right && <div className="charity-list-scroll-right"><ChevronRight /></div>}
         </div>

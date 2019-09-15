@@ -20,7 +20,7 @@ export default class Home extends React.Component {
   }
 
   componentDidMount() {
-    /*
+  
     getListOfUsers().then(res => {
       const userArr = Object.values(res);
       userArr.forEach((elem) => {
@@ -30,7 +30,7 @@ export default class Home extends React.Component {
       })
       return;
     })
-    */
+
     return getRefOfCharities()
       .then(res => {
         const charitiesArr = Object.values(res);
@@ -77,7 +77,7 @@ export default class Home extends React.Component {
             </Select>
           </div>
           {Object.keys(this.state.charities)
-            .map(category => <CharityList key={category} category={category} charities={this.state.charities[category]} sort={this.state.sort} />)}
+            .map(category => <CharityList key={category} category={category} charities={this.state.charities[category]} user={this.state.identity} />)}
         </div>
       </div>
     );

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, Modal } from 'antd';
+import { Card, Modal, Button, Input } from 'antd';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { wallet } from '../configs';
 
     const data = [
       { name: 'Group A', value: 400 },
@@ -17,22 +18,58 @@ export default class Charity extends React.Component {
     super();
     this.state = {
       visible: false,
-      isHovering: false,
+      // isHovering: false,
+      isDonating: false,
+      amount: '',
+      isLoading: false,
     };
+
+    // wallet.getAllDeposits().then(res => console.log(res))
   }
 
   showModal = () => { this.setState({ visible: true }) }
 
   closeModal = () => { this.setState({ visible: false }) }
 
-  onMouseOver= () => { this.setState({ isHovering: true }) }
+  onClickDonate = () => {
+    if (this.state.isDonating) {
+      console.log('donate')
+      console.log(this.state.amount)
+      wallet.sendToCharity(this.state.amount, this.props.user.address, this.props.charity.address)
+        .then(res => console.log(res));
+      this.closeModal();
+    } else {
+      this.setState({ isDonating: true })
+    }
+  }
+
+  onInputChange = (e) => {
+    this.setState({ amount: e.target.value })
+  }
+
+  // onMouseOver= () => { this.setState({ isHovering: true }) }
   
-  onMouseOut= () => { this.setState({ isHovering: false }) }
+  // onMouseOut= () => { this.setState({ isHovering: false }) }
 
   renderLabel = (entry) => `${entry.name}, ${entry.value}%`
   
   render() {
     const { charity } = this.props;
+    const footer = (
+      <div>
+        {this.state.isDonating &&
+        <div className="donate-input">
+          <div>Amount</div>
+          <Input value={this.state.amount} placeholder="Enter an amount ($)" onChange={this.onInputChange} autoFocus />
+        </div>}
+        <Button key="back" onClick={this.closeModal}>
+          Close
+        </Button>
+        <Button key="submit" type="primary" onClick={this.onClickDonate}>
+          Donate
+        </Button>
+      </div>
+    )
     
     return (
       <div>
@@ -67,8 +104,7 @@ export default class Charity extends React.Component {
           visible={this.state.visible}
           onOk={this.closeModal}
           onCancel={this.closeModal}
-          okText="Donate"
-          cancelText="Close"
+          footer={footer}
         >
           <div className="chart-container">
             <ResponsiveContainer width="100%" height="100%">
