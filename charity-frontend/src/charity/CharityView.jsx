@@ -82,49 +82,38 @@ export default class CharityView extends React.Component {
             axios.get(`${td_uri}customers/${this.state.identity.td_id}/transactions`, config)
             .then((res) => {
               wallet.getAllReimbursements().then((reimbursements) => {
-                let i = 0;
-                res.data.result.forEach((elem) => {
-                  let flag = false;
-                  
-                  let len = reimbursements.data.length;
-                  for (let i = 0; i < len; i++) {
-                    if ((elem.id === reimbursements.data[i].tdTransactionRecord) &&
-                        (reimbursements.data[i].reimburseTo === this.state.identity.address)) {
-                      flag = true;
-                      break;
-                    }
-                  }
-
-                  if (!flag && elem.currencyAmount > 0) {
-                    let tmpTransaction = elem;
-                    tmpTransaction.currencyAmount = this.precise(tmpTransaction.currencyAmount, true);
-                    tmpTransaction.key = i;
-                    i += 1;
-                    tmpTransaction.location = elem.locationCity ? `${elem.locationCity}, ${elem.locationCountry}` : "N/A";
-                    tmpArray.push(elem);
-                  }
+                let reimbursement_data = reimbursements.data.map(x => x.tdTransactionRecord);
+                let filtered_results = res.data.result.filter(x => !reimbursement_data.includes(x.id));
+                filtered_results = filtered_results.map(x => {
+                    x.currencyAmount = this.precise(x.currencyAmount, true);
+                    x.location = x.locationCity ? `${x.locationCity}, ${x.locationCountry}` : "N/A";
+                    return x;
                 });
+                console.log(filtered_results);
+                let removal_promises = reimbursements.data.map(x => db.removeInterimReimbursement(x.tdTransactionRecord));
+                Promise.all(removal_promises).then(() => {
                 wallet.getBalance(this.state.identity.address).then((res) => {
                     db.getAllInterimReimbursements().then(data => {     
                         let amount = 0;
                         let data_id = [];
                         Object.keys(data).map(x => { amount += data[x].amount_spent; data_id.push(data[x].td_transaction_record); });
-                        let filtered_transaction_data = tmpArray.filter(x => !data_id.includes(x.id));
+                        let filtered_transaction_data = filtered_results.filter(x => !data_id.includes(x.id));
+                        let i = 0;
+                        filtered_transaction_data = filtered_transaction_data.map(x => { x.key = i++; return x; });
                         this.setState({ balance: ((res.balance * 100) - amount)/100, transactionData: filtered_transaction_data, loading : false })
                     });
                 })
+                  });
+
               })
             });
-            })
+        })
           break;
         }
       }
       return;
     })
   }
-
-  // wallet.get('/getBalanceOfWallet')
-  // addCharity = () => db.doCreateCharity("id", 1522322348, "charity@we.com", 'Humanitarian', 'WE Charity')
 
   constructor(props) {
     super(props);
@@ -148,7 +137,7 @@ export default class CharityView extends React.Component {
     let amount = 0;
     console.log(selectedRowKeys);
     selectedRowKeys.forEach((elem) => {
-      amount += parseFloat(this.state.transactionData[elem - 1].currencyAmount);
+      amount += parseFloat(this.state.transactionData[elem].currencyAmount);
     })
     this.setState({ selectedRowKeys, amount: this.precise(amount, false) });
   };
@@ -201,26 +190,24 @@ export default class CharityView extends React.Component {
       }
     })
     this.state.selectedRowKeys.forEach((elem) => {
-    db.createInterimReimbursement({ 
-        amount_spent : this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount), 
-        charity : this.state.identity.address, 
-        td_transaction_record : this.state.transactionData[elem].id, 
-        category : this.state.transactionData[elem].categoryTags[0]}).then(res => console.log("completed"));
-        db.getNonce().then(val => {
-            wallet.reimburseTransaction(this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount), 
-                                  this.state.identity.address, 
-                                  this.state.transactionData[elem].id,
-                                  this.state.transactionData[elem].categoryTags[0], 
-                                    val + 1).then((res) => {
-                                    console.log("Transaction result : ", res);
-                                  });
-            db.incrementNonce().then(a => {});
-        })
-    })
+        db.createInterimReimbursement({ 
+            amount_spent : this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount), 
+            charity : this.state.identity.address, 
+            td_transaction_record : this.state.transactionData[elem].id, 
+            category : this.state.transactionData[elem].categoryTags[0]}).then(res => console.log("completed"));
+        wallet.reimburseTransaction(this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount),
+                                 this.state.identity.address,
+                                 this.state.transactionData[elem].id,
+                                 this.state.transactionData[elem].categoryTags[0]).then((res) => {
+                                   console.log("Transaction result : ", res);
+                                 });
+
+        });
     doAppendToAggregateDonations(this.state.identity.key, aggregate_donations).then((res) => {
       // console.log(res);
     });
   }
+
 
   render() {
     const { selectedRowKeys } = this.state;
