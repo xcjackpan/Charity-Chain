@@ -14,6 +14,21 @@ export default class LoginBox extends React.Component {
       loginError: false,
       loading: false,
     }
+    this.onKeyPress = this.onKeyPress.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('keyup', this.onKeyPress, false);
+}
+
+  componentWillUnmount() {
+    window.removeEventListener('keyup', this.onKeyPress, false);
+  }
+
+  onKeyPress = (e) => {
+    if (e.keyCode === 13) {
+      this.submitLogin();
+    }
   }
 
   updateUsername = (e) => {
