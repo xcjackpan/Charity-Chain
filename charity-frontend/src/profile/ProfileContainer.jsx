@@ -36,16 +36,22 @@ export default class ProfileContainer extends Component {
             db.getRefOfTransactions(uid)
               .then(res => {
                 const transactionArray = Object.keys(res).map(key => res[key]);
+                console.log(transactionArray)
                 let userTransactions = Object.keys(res)
                   .map((key, index) => {
                     const { charityAddress } = transactionArray[index];
                     const charity = charityList.find(charity => charity.address === charityAddress);
-                    return {
-                      ...res[key],
-                      charityName: charity.name,
-                      charityLogo: charity.image
+                    console.log(charity)
+                    if (charity) {
+                      return {
+                        ...res[key],
+                        charityName: charity.name,
+                        charityLogo: charity.image
+                      }
                     }
+                    return null;
                   })
+                  .filter(elem => !!elem)
                   .sort((a, b) => b.timestamp - a.timestamp);
                 wallet.getAllReimbursements().then(res => {
                   let userReimbursements = res.data.filter((e) => uid !== e.reimburseFrom.split("@")[0]);
