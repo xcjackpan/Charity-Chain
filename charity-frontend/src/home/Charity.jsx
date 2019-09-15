@@ -42,7 +42,7 @@ export default class Charity extends React.Component {
   
   // onMouseOut= () => { this.setState({ isHovering: false }) }
 
-  renderLabel = (entry) => `${entry.name}, $${entry.value}`
+  renderLabel = (entry) => `${entry.name}, ${entry.value}%`
   
   render() {
     const { charity } = this.props;
