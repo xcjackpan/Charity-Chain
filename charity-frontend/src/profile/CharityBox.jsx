@@ -17,11 +17,10 @@ const CharityBox = props =>
         <Meta
             description={
                 <Descriptions title={props.name} column={1}>
-                    <Descriptions.Item label='Transaction'>{props.transactionId}</Descriptions.Item>
-                    <Descriptions.Item label='Time'>{props.timestamp.toDateString()}</Descriptions.Item>
-                    <Descriptions.Item label='Amount'>{`$${props.amount.toFixed(2)}`}</Descriptions.Item>
+                    <Descriptions.Item label='Timestamp'>{new Date(props.timestamp).toDateString()}</Descriptions.Item>
+                    <Descriptions.Item label='Amount'>{`$${parseInt(props.amount).toFixed(2)}`}</Descriptions.Item>
                     {props.spending ?
-                        <Descriptions.Item label='Spent on:'>100% reason to remember the name</Descriptions.Item>
+                        <Descriptions.Item label='Category:'>100% reason to remember the name</Descriptions.Item>
                     : null}
                 </Descriptions>
             }

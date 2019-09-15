@@ -13,13 +13,14 @@ export default class ProfileView extends Component {
   }
 
   render() {
-    const { transactions, consumedTransactions, match } = this.props;
+    const { consumedTransactions, unconsumedTransactions, match } = this.props;
+    console.log(unconsumedTransactions);
     return (
       <div className='profile-container'>
         <Header className="header">
           <div className="top-bar">
             <h1>CharityChain</h1>
-            <span id="username">{this.props.match.params.id}</span>
+            <span id="username">{match.params.id}</span>
             <Link style={{ marginRight: "2%" }} to={`/user/${match.params.id}/browse`}>
               <Button className="logout">Browse Charities</Button>
             </Link>
@@ -44,11 +45,11 @@ export default class ProfileView extends Component {
             )}
           </div>
         </div> : null}
-        {transactions && transactions.length > 0 ?
+        {unconsumedTransactions && unconsumedTransactions.length > 0 ?
         <div>
         <PageHeader title="Unused Donations" subTitle="Donations that have been not spent by the charity" />
         <div className='profile-charities-container'>
-          {transactions.map(transaction => 
+          {unconsumedTransactions.map(transaction => 
             <CharityBox
               name={transaction.charityName}
               logo={transaction.charityLogo}

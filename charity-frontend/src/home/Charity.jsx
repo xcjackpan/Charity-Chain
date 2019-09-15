@@ -24,10 +24,11 @@ export default class Charity extends React.Component {
 
   onClickDonate = async () => {
     if (this.state.isDonating) {
-      await db.createTransaction(this.props.user.uid, this.state.amount, this.props.charity.address, new Date().getTime());
+      let timestamp = new Date().getTime();
+      await db.createTransaction(this.props.user.uid, this.state.amount, this.props.charity.address, timestamp);
       console.log('donate');
       console.log(this.state.amount);
-      wallet.sendToCharity(this.state.amount * 100, this.props.user.address, this.props.charity.address)
+      wallet.sendToCharity(this.state.amount * 100, this.props.user.address, this.props.charity.address, timestamp)
         .then(res => console.log(res));
       this.closeModal();
     } else {
@@ -43,7 +44,7 @@ export default class Charity extends React.Component {
   
   // onMouseOut= () => { this.setState({ isHovering: false }) }
 
-  renderLabel = (entry) => `${entry.name}, $${entry.value}`
+  renderLabel = (entry) => `${entry.name}, ${entry.value}%`
   
   render() {
     const { charity } = this.props;

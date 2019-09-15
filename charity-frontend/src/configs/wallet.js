@@ -20,7 +20,7 @@ export const sendToCharity = (amount_to_send, sender, receiver, timestamp) =>
     chain.post('/sendToCharity', { amount_spent : amount_to_send, sender, receiver, senderTimestamped : sender + '@' + timestamp, 'Access-Control-Allow-Origin': '*'  });
 
 export const reimburseTransaction = (amount_to_send, charity_address, td_transaction_record, category) => 
-    chain.post('/reimburseTransaction', { amount_spent : amount_to_send, charity : charity_address, td_transaction_record : td_transaction_record, category : category });
+    chain.post('/reimburseTransaction', { amount_spent : amount_to_send, charity : charity_address, td_transaction_record : td_transaction_record, category : category, 'Access-Control-Allow-Origin': '*' });
 
 export const getAllDeposits = () =>
     chain.get('/events/Deposit');
