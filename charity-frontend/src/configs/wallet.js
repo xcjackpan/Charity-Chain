@@ -1,8 +1,11 @@
+import link_auth from './link_auth';
+
 const { link } = require('@blockmason/link-sdk');
+const { clientId, clientSecret } = link_auth;
 
 const chain = link({
-    clientId: '',
-    clientSecret: ''
+    clientId,
+    clientSecret
 }, {
     fetch
 });

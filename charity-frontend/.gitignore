@@ -26,3 +26,4 @@ package-lock.json
 
 # api keys
 td_auth.js
+link_auth.js
