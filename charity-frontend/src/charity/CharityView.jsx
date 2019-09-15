@@ -5,7 +5,7 @@ import CharitySider from './CharitySider';
 import './CharityView.css';
 import axios from 'axios';
 import { wallet, firebase, auth, db } from '../configs';
-import { doCreateCharity, getRefOfCharities } from '../configs/db.js';
+import { getRefOfCharities } from '../configs/db.js';
 const { Header, Sider, Content } = Layout;  
 const {apiKey, initialCustomerId} = td_auth;
 const td_uri = 'https://api.td-davinci.com/api/';
@@ -64,11 +64,17 @@ const columns = [
   },
 ];
 
-const base64 = "";
-
 export default class CharityView extends React.Component {
   componentDidMount() {
-    getRefOfCharities()
+    return getRefOfCharities().then(res => {
+      const charitiesArr = Object.values(res);
+      charitiesArr.forEach((elem) => {
+        if (elem.account_number.toString() === this.props.match.params.id) {
+          this.setState({ identity: elem });
+        }
+      })
+      return;
+    })
   }
 
   // wallet.get('/getBalanceOfWallet')
@@ -77,7 +83,9 @@ export default class CharityView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      identity: {},
       amount: 0,
+      name: "",
       loading: true,
       transactionData: [],
       selectedRowKeys: [],
@@ -149,7 +157,7 @@ export default class CharityView extends React.Component {
         <Layout>
           <Header className="header">
             <div className="top-bar">
-              <span className="name">{this.props.match.params.id}</span>
+              <span className="name">{this.state.identity.name}</span>
               <span className="credits">300 credits</span>
               <Button className="logout" onClick={this.props.logOut}>Log out</Button>
             </div>

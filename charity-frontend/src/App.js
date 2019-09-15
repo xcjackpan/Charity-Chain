@@ -17,15 +17,14 @@ import 'antd/dist/antd.css';
 function App() {
   // testEndpoint();
 
-  let logIn = (name, charity) => {
+  let logIn = (identityObj, charity) => {
     // Name will be a userID passed into component
     // Component, when mounted, makes a query to get all the informatin it needs about itself
     // We query for the details (money) associated with the userID
-    console.log(name);
     if (!charity) {
-      history.push(`/user/${name}`);
+      history.push(`/user/${identityObj.username}`);
     } else {
-      history.push(`/charity/${name}`);
+      history.push(`/charity/${identityObj.account_number}`);
     }
     window.location.reload()
   }
