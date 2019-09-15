@@ -4,7 +4,7 @@ import { Button, Table, Layout, Modal, Spin } from 'antd';
 import CharitySider from './CharitySider';
 import './CharityView.css';
 import axios from 'axios';
-
+import { wallet, firebase, auth, db } from '../configs';
 import { doCreateCharity, getRefOfCharities } from '../configs/db.js';
 const { Header, Sider, Content } = Layout;  
 const {apiKey, initialCustomerId} = td_auth;
@@ -71,6 +71,7 @@ export default class CharityView extends React.Component {
     getRefOfCharities()
   }
 
+  // wallet.get('/getBalanceOfWallet')
   // addCharity = () => doCreateCharity("id", 4242584820, "donate@wwf.com", "Animals", base64)
 
   constructor(props) {
@@ -151,7 +152,7 @@ export default class CharityView extends React.Component {
             <div className="top-bar">
               <span className="name">UNICEF</span>
               <span className="credits">300 credits</span>
-              <Button className="logout">Log out</Button>
+              <Button className="logout" onClick={this.props.logOut}>Log out</Button>
             </div>
           </Header>
           <Layout>

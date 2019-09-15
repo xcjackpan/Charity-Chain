@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import CharityView from './charity/CharityView';
 import Login from './login/Login';
 import Home from './home/Home';
 import { firebase, auth, db } from './configs';
+import history from "./history";
 import './App.css';
 import 'antd/dist/antd.css';
 
@@ -14,17 +15,34 @@ import 'antd/dist/antd.css';
 
 function App() {
   // testEndpoint();
+
+  const [name, setName] = useState("");
+
+  let logIn = (name, charity) => {
+    setName(name);
+    if (!charity) {
+      history.push(`/user`);
+    } else {
+      history.push(`/charity`);
+    }
+    window.location.reload()
+  }
+
+  let logOut = () => {
+    history.push(`/`);
+    window.location.reload()
+  }
+
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter history={history}>
         <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/charity" component={CharityView} />
+          <Route path="/user" render={() => <Home logOut={logOut} name={name}/>} />
+          <Route path="/charity" render={() => <CharityView logOut={logOut} name={name}/>} />
           {/* user and charity views */}
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" render={() => <Login logIn={logIn} />} />
         </Switch>
       </BrowserRouter>
-      
     </div>
   );
 }
