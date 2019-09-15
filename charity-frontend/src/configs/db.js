@@ -66,6 +66,14 @@ export const getRefOfConsumedTransactions = (uid) => {
     });
 }
 
+export const createTransaction = (uid, amount, charityAddress, timestamp) => {
+  db.ref(`users/${uid}/transaction`).push({
+    amount,
+    charityAddress,
+    timestamp
+  });
+}
+
 export const incrementDonation = (uid) => {
   const dbRef = db.ref(`charities/${uid}/donation_count`);
   dbRef.transaction(donation_count => {
@@ -76,13 +84,13 @@ export const incrementDonation = (uid) => {
   });
 }
 
-export const doCreateCharity = (id, account_number, email, category, image, donation_count = 0) =>
+export const doCreateCharity = (id, name, account_number, email, category, donation_count = 0) =>
   db.ref('charities').push({
     public_id: id,
     account_number,
+    name,
     email,
     category,
-    image,
     donation_count
   });
 

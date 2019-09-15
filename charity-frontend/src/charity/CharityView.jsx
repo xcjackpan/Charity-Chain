@@ -77,7 +77,7 @@ export default class CharityView extends React.Component {
           let identity = charitiesArr[i];
           identity.key = keysArr[i];
           this.setState({ identity: charitiesArr[i] }, () => {
-            axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
+            axios.get(`${td_uri}customers/${this.state.identity.td_id}/transactions`, config)
             .then((res) => {
               wallet.getAllReimbursements().then((reimbursements) => {
                 let tmpArray = [];
@@ -119,7 +119,7 @@ export default class CharityView extends React.Component {
   }
 
   // wallet.get('/getBalanceOfWallet')
-  // addCharity = () => doCreateCharity("id", 4242584820, "donate@wwf.com", "Animals", base64)
+  // addCharity = () => db.doCreateCharity("id", 1522322348, "charity@we.com", 'Humanitarian', 'WE Charity')
 
   constructor(props) {
     super(props);
@@ -180,20 +180,12 @@ export default class CharityView extends React.Component {
       this.setState({balance: res.balance})
     })
     */
-    let tmpArray = [];
-    this.state.transactionData.forEach((transactionElem) => {
-      let flag = false;
-      this.state.selectedRowKeys.forEach((rowIndex) => {
-        if (transactionElem.id === this.state.transactionData[rowIndex].id) {
-          flag = true;
-        }
-      });
-      if (!flag) {
-        tmpArray.push(transactionElem);
-      }
-    });
-    this.setState({balance: ((this.state.balance * 100) - amount)/100, 
-                   transactionData: tmpArray})
+    console.log(this.state.transactionData);
+    let selected_rows = this.state.selectedRowKeys.map(x => this.state.transactionData[x].id);
+    let filtered_transaction_data = this.state.transactionData.filter(x => !selected_rows.includes(x.id));
+    console.log(filtered_transaction_data);
+
+    this.setState({balance: ((this.state.balance * 100) - amount)/100, transactionData: filtered_transaction_data})
     let aggregate_donations = {};
     this.state.selectedRowKeys.forEach((elem) => {
       let type = this.state.transactionData[elem].categoryTags[0];
@@ -211,7 +203,7 @@ export default class CharityView extends React.Component {
       wallet.reimburseTransaction(this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount), 
                                   this.state.identity.address, 
                                   this.state.transactionData[elem].id,
-                                  this.state.transactionData[elem].categoryTags[0]).then((res) =>{
+                                  this.state.transactionData[elem].categoryTags[0]).then((res) => {
                                     console.log("Transaction result : ", res)
                                   })
     })
@@ -239,6 +231,7 @@ export default class CharityView extends React.Component {
               <Link style={{ marginLeft: "2%" }} to={`/`}>
                 <Button className="logout">Log out</Button>
               </Link>
+              {/* <button onClick={this.addCharity}>Add Charity</button> */}
             </div>
           </Header>
           <Layout>
@@ -250,7 +243,6 @@ export default class CharityView extends React.Component {
                   </div> :
                 <Table rowSelection={rowSelection} dataSource={this.state.transactionData} columns={columns} />
               }
-              <button onClick={this.addCharity}>Add Charity</button>
             </Content>
             <Sider width={400} className="sider">
               <CharitySider amount={`$${this.precise(this.state.amount, true)}`}
