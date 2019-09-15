@@ -1,11 +1,11 @@
 .charity-container {
-    width: 30vw;
-    height: 80%;
-    border: solid black 1px;
-    margin: 0;
-    display: flex;
+	width: 30vw;
+	height: 80%;
+	border: solid black 1px;
+	margin: 0;
+	display: flex;
 }
 
 .charity-container:hover {
-    box-shadow: 10px 10px 10px 10px grey;
+  box-shadow: 10px 10px 10px 10px grey;
 }

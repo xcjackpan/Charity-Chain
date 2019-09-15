@@ -21,7 +21,7 @@ function App() {
     // Component, when mounted, makes a query to get all the informatin it needs about itself
     // We query for the details (money) associated with the userID
     if (!charity) {
-      history.push(`/user/${identityObj.username}`);
+      history.push(`/user/${identityObj.username}/browse`);
     } else {
       history.push(`/charity/${identityObj.account_number}`);
     }
@@ -37,9 +37,9 @@ function App() {
     <div className="App">
       <BrowserRouter history={history}>
         <Switch>
-          <Route path="/user" render={(props) => <Home {...props} logOut={logOut} />} />
+          <Route path="/user/:id/browse" render={(props) => <Home {...props} logOut={logOut} />} />
+          <Route path="/user/:id/profile" render={(props) => <ProfileContainer {...props} logOut={logOut} />} /> 
           <Route path="/charity/:id" render={(props) => <CharityView {...props} logOut={logOut} />} />
-          <Route path="/profile" render={(props) => <ProfileContainer {...props} logOut={logOut} />} /> 
 
           <Route exact path="/" render={() => <Login logIn={logIn} />} />
         </Switch>
