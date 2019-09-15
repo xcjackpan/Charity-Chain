@@ -21,6 +21,11 @@ export default class Home extends React.Component {
       .then(res => {
         const charitiesArr = Object.values(res);
         const charities = _.groupBy(charitiesArr, 'category')
+        Object.keys(charities).forEach(category => {
+          if (this.state.sort === 'popular') {
+            charities[category] = _.reverse(_.sortBy(charities[category], ['donation_count']));
+          }
+        })
         this.setState({ charities });
       });
   }
@@ -42,7 +47,7 @@ export default class Home extends React.Component {
           </Select.OptGroup>
         </Select>
         {Object.keys(this.state.charities)
-          .map(category => <CharityList category={category} charities={this.state.charities[category]} sort={this.state.sort} />)}
+          .map(category => <CharityList key={category} category={category} charities={this.state.charities[category]} sort={this.state.sort} />)}
       </div>
     );
   }

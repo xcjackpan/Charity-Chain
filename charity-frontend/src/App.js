@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import CharityView from './charity/CharityView';
 import Login from './login/Login';
 import Home from './home/Home';
 import ProfileContainer from './profile/ProfileContainer';
-import { firebase, auth, db } from './configs';
 import history from "./history";
 import './App.css';
 import 'antd/dist/antd.css';
