@@ -20,7 +20,9 @@ const CharityBox = props =>
                     <Descriptions.Item label='Timestamp'>{new Date(props.timestamp).toDateString()}</Descriptions.Item>
                     <Descriptions.Item label='Amount'>{`$${parseInt(props.amount).toFixed(2)}`}</Descriptions.Item>
                     {props.spending ?
-                        <Descriptions.Item label='Category:'>100% reason to remember the name</Descriptions.Item>
+                        <Descriptions.Item label='Categories'>
+                            {props.spending.join(', ')}
+                        </Descriptions.Item>
                     : null}
                 </Descriptions>
             }

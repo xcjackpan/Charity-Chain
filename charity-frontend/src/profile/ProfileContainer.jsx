@@ -51,6 +51,7 @@ export default class ProfileContainer extends Component {
                       .filter(e => e.reimburseFrom.split('@')[1] == userTransactions[i].timestamp);
                   }
                   this.setState({ transactions: userTransactions });
+                  console.log(userTransactions);
                 });
               })
             });

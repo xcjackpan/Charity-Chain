@@ -7,6 +7,10 @@ import './ProfileView.css';
 
 const { Header } = Layout;
 
+function onlyUnique(value, index, self) { 
+  return self.indexOf(value) === index;
+}
+
 export default class ProfileView extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +44,10 @@ export default class ProfileView extends Component {
                 transactionId={transaction.transactionId}
                 amount={transaction.amount}
                 timestamp={transaction.timestamp}
-                spending={transaction.spending}
+                spending={transaction.reimbursements
+                  .map(elem => elem.category)
+                  .filter(onlyUnique)
+                }
               />
             )}
           </div>
