@@ -21,7 +21,7 @@ const CharityBox = props =>
                 <div>
                     <Statistic title="Amount" value={`$${parseInt(props.amount).toFixed(2)}`} />
                     <div>{new Date(props.timestamp).toDateString()}</div>
-                    {!!props.spending && <div style={{ marginTop: "8px" }}>{`Categories: ${props.spending.join(', ')}`}</div>}
+                    {!!props.spending && <div style={{ marginTop: "8px" }}>{`Spent on: ${props.spending.join(', ')}`}</div>}
                 </div>
                 
                 // <div></div>
