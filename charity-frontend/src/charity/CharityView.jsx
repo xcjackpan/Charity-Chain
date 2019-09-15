@@ -94,11 +94,13 @@ export default class CharityView extends React.Component {
     axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
       .then((res) => {
         let tmpArray = [];
-        res.data.result.forEach((elem, index) => {
+        let i = 0;
+        res.data.result.forEach((elem) => {
           if (elem.currencyAmount > 0) {
             let tmpTransaction = elem;
             tmpTransaction.currencyAmount = this.precise(tmpTransaction.currencyAmount, true);
-            tmpTransaction.key = index;
+            tmpTransaction.key = i;
+            i += 1;
             tmpTransaction.location = elem.locationCity ? `${elem.locationCity}, ${elem.locationCountry}` : "N/A";
             tmpArray.push(elem);
           }
@@ -115,9 +117,9 @@ export default class CharityView extends React.Component {
   onSelectChange = selectedRowKeys => {
     let amount = 0;
     selectedRowKeys.forEach((elem) => {
-      amount += this.precise(this.state.transactionData[elem].currencyAmount, false);
+      amount += this.state.transactionData[elem].currencyAmount;
     })
-    this.setState({ selectedRowKeys, amount: amount });
+    this.setState({ selectedRowKeys, amount: this.precise(amount, false) });
   };
 
   resetCheckboxes = () => {
