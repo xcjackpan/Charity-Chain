@@ -77,7 +77,7 @@ export default class CharityView extends React.Component {
           let identity = charitiesArr[i];
           identity.key = keysArr[i];
           this.setState({ identity: charitiesArr[i] }, () => {
-            axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
+            axios.get(`${td_uri}customers/${this.state.identity.td_id}/transactions`, config)
             .then((res) => {
               wallet.getAllReimbursements().then((reimbursements) => {
                 let tmpArray = [];

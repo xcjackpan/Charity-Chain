@@ -7,19 +7,24 @@ import './ProfileView.css';
 
 const { Header } = Layout;
 
+function onlyUnique(value, index, self) { 
+  return self.indexOf(value) === index;
+}
+
 export default class ProfileView extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { transactions, consumedTransactions, match } = this.props;
+    const { consumedTransactions, unconsumedTransactions, match } = this.props;
+    console.log(unconsumedTransactions);
     return (
       <div className='profile-container'>
         <Header className="header">
           <div className="top-bar">
             <h1>CharityChain</h1>
-            <span id="username">{this.props.match.params.id}</span>
+            <span id="username">{match.params.id}</span>
             <Link style={{ marginRight: "2%" }} to={`/user/${match.params.id}/browse`}>
               <Button className="logout">Browse Charities</Button>
             </Link>
@@ -39,16 +44,19 @@ export default class ProfileView extends Component {
                 transactionId={transaction.transactionId}
                 amount={transaction.amount}
                 timestamp={transaction.timestamp}
-                spending={transaction.spending}
+                spending={transaction.reimbursements
+                  .map(elem => elem.category)
+                  .filter(onlyUnique)
+                }
               />
             )}
           </div>
         </div> : null}
-        {transactions && transactions.length > 0 ?
+        {unconsumedTransactions && unconsumedTransactions.length > 0 ?
         <div>
         <PageHeader title="Unused Donations" subTitle="Donations that have been not spent by the charity" />
         <div className='profile-charities-container'>
-          {transactions.map(transaction => 
+          {unconsumedTransactions.map(transaction => 
             <CharityBox
               name={transaction.charityName}
               logo={transaction.charityLogo}
