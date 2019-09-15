@@ -8,14 +8,10 @@ import history from "./history";
 import './App.css';
 import 'antd/dist/antd.css';
 
-// async function testEndpoint() {
-//   const res = await db.incrementDonation('-LokjEwXV8gjG1Ut-8lU');
-//   console.log(res);
-// }
+import { consumeTransactionFromUser } from './configs/db';
 
 function App() {
-  // testEndpoint();
-
+  consumeTransactionFromUser('1', '105');
   let logIn = (identityObj, charity) => {
     // Name will be a userID passed into component
     // Component, when mounted, makes a query to get all the informatin it needs about itself
