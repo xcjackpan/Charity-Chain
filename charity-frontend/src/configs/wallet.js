@@ -27,4 +27,3 @@ export const getAllDeposits = () =>
 
 export const getAllReimbursements = () =>
     chain.get('/events/Reimbursement');
-

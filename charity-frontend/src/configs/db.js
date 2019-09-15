@@ -2,6 +2,22 @@ import { db } from './firebase';
 
 // User API
 
+export const doAppendToAggregateDonations = (uid, donations) => {
+  return db.ref(`charities/${uid}/aggregate_donations`).once('value')
+    .then(snapshot => {
+      let current_aggregate_donations = snapshot.val();
+      Object.keys(donations).forEach((elem) => {
+        if (current_aggregate_donations[elem]) {
+          current_aggregate_donations[elem] += donations[elem];
+        } else {
+          current_aggregate_donations[elem] = donations[elem];
+        }
+      })
+      db.ref(`charities/${uid}/aggregate_donations`).set(current_aggregate_donations);
+      return current_aggregate_donations;
+    });
+}
+
 export const getListOfUsers = () => {
   return db.ref('users').once('value')
     .then(snapshot => {

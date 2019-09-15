@@ -6,7 +6,7 @@ import CharitySider from './CharitySider';
 import './CharityView.css';
 import axios from 'axios';
 import { wallet, firebase, auth, db } from '../configs';
-import { getRefOfCharities } from '../configs/db.js';
+import { getRefOfCharities, doAppendToAggregateDonations } from '../configs/db.js';
 const { Header, Sider, Content } = Layout;
 const {apiKey, initialCustomerId} = td_auth;
 const td_uri = 'https://api.td-davinci.com/api/';
@@ -70,9 +70,12 @@ export default class CharityView extends React.Component {
   componentDidMount() {
     return getRefOfCharities().then(res => {
       const charitiesArr = Object.values(res);
+      const keysArr = Object.keys(res);
       let len = charitiesArr.length;
       for (let i = 0; i < len; i++) {
         if (charitiesArr[i].account_number.toString() === this.props.match.params.id) {
+          let identity = charitiesArr[i];
+          identity.key = keysArr[i];
           this.setState({ identity: charitiesArr[i] }, () => {
             axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
             .then((res) => {
@@ -125,7 +128,7 @@ export default class CharityView extends React.Component {
   onSelectChange = selectedRowKeys => {
     let amount = 0;
     selectedRowKeys.forEach((elem) => {
-      amount += this.state.transactionData[elem].currencyAmount;
+      amount += parseFloat(this.state.transactionData[elem].currencyAmount);
     })
     this.setState({ selectedRowKeys, amount: this.precise(amount, false) });
   };
@@ -145,14 +148,37 @@ export default class CharityView extends React.Component {
       cancelText: 'Let me think about it',
       width: "30vw",
       maskClosable: true,
-      onOk() {
-        console.log('OK');
-      },
-      onCancel() {
-        console.log('Cancel');
+      onOk: () => {
+        this.reimburse();
       },
     });
   };
+
+  convertCurrencyAmountToInt = (currencyAmount) => {
+    return Math.floor(100 * parseFloat(currencyAmount));
+  }
+
+  reimburse = () => {
+    let aggregate_donations = {};
+    this.state.selectedRowKeys.forEach((elem) => {
+      let type = this.state.transactionData[elem].categoryTags[0];
+      if (aggregate_donations[type]) {
+        aggregate_donations[type] += this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount);
+      } else {
+        aggregate_donations[type] = this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount);
+      }
+    })
+    //amount = this.convertCurrencyAmountToInt(amount.substr(1));
+    this.state.selectedRowKeys.forEach((elem) => {
+      wallet.reimburseTransaction(this.convertCurrencyAmountToInt(this.state.transactionData[elem].currencyAmount), 
+                                  this.state.identity.key, 
+                                  this.state.transactionData[elem].id,
+                                  this.state.transactionData[elem].categoryTags[0])
+    })
+    doAppendToAggregateDonations(this.state.identity.key, aggregate_donations).then((res) => {
+      // console.log(res);
+    });
+  }
 
   render() {
     const { selectedRowKeys } = this.state;
