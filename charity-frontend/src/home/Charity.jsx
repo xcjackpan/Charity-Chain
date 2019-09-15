@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Modal, Button, Input } from 'antd';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { wallet } from '../configs';
+import { wallet, db } from '../configs';
     
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#f5222d'];
 
@@ -22,11 +22,13 @@ export default class Charity extends React.Component {
 
   closeModal = () => { this.setState({ visible: false }) }
 
-  onClickDonate = () => {
+  onClickDonate = async () => {
     if (this.state.isDonating) {
-      console.log('donate')
-      console.log(this.state.amount)
-      wallet.sendToCharity(this.state.amount * 100, this.props.user.address, this.props.charity.address)
+      let timestamp = new Date().getTime();
+      await db.createTransaction(this.props.user.uid, this.state.amount, this.props.charity.address, timestamp);
+      console.log('donate');
+      console.log(this.state.amount);
+      wallet.sendToCharity(this.state.amount * 100, this.props.user.address, this.props.charity.address, timestamp)
         .then(res => console.log(res));
       this.closeModal();
     } else {
