@@ -97,7 +97,7 @@ export default class Charity extends React.Component {
         />
         <Modal
           className="charity-modal"
-          title="charity name"
+          title={charity.name}
           visible={this.state.visible}
           onOk={this.closeModal}
           onCancel={this.closeModal}

@@ -60,3 +60,12 @@
 .login-box .back {
   width: 15vw;
 }
+
+.login-page .title {
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translate(-50%);
+  color: #1890ff;
+  font-size: 36px;
+}

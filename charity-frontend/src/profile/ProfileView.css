@@ -52,10 +52,39 @@
 .profile-container .header h1 {
   color: white;
   margin: 0 0 0 1.5vw;
+  font-size: 36px;
 }
 
 .profile-container .header #username {
   font-size: 20px;
   margin-left: auto;
   margin-right: 4%;
+  display: flex;
+  align-items: center;
+}
+
+.profile-container .profile-view-body {
+  margin: 5vh 5vw;
+}
+
+.profile-charities-container .charity-box-card {
+  width: 23%;
+  margin: 1%;
+}
+
+.profile-charities-container .charity-box-card .ant-statistic {
+  margin-bottom: 12px;
+}
+
+.profile-charities-container .charity-box-card .ant-statistic-title {
+  margin: 0;
+}
+
+.profile-view-body .ant-page-header-heading {
+  display: flex;
+  align-items: flex-end;
+}
+
+.profile-view-body span.ant-page-header-heading-sub-title {
+  margin-bottom: 1px;
 }

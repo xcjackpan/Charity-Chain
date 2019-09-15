@@ -35,15 +35,24 @@ export default class ProfileContainer extends Component {
           .then(uid => {
             db.getRefOfTransactions(uid)
               .then(res => {
-                let userTransactions = Object.keys(res).map(key => {
-                  const { charityAddress } = Object.keys(res).map(key => res[key])[0];
-                  const charity = charityList.filter(charity => charity.address === charityAddress)[0] || null;
-                  return {
-                    ...res[key],
-                    charityName: charity.name,
-                    charityLogo: charity.image
-                  }
-                });
+                const transactionArray = Object.keys(res).map(key => res[key]);
+                console.log(transactionArray)
+                let userTransactions = Object.keys(res)
+                  .map((key, index) => {
+                    const { charityAddress } = transactionArray[index];
+                    const charity = charityList.find(charity => charity.address === charityAddress);
+                    console.log(charity)
+                    if (charity) {
+                      return {
+                        ...res[key],
+                        charityName: charity.name,
+                        charityLogo: charity.image
+                      }
+                    }
+                    return null;
+                  })
+                  .filter(elem => !!elem)
+                  .sort((a, b) => b.timestamp - a.timestamp);
                 wallet.getAllReimbursements().then(res => {
                   let userReimbursements = res.data.filter((e) => uid !== e.reimburseFrom.split("@")[0]);
                   for(let i = 0; i < userTransactions.length; i++) {
@@ -51,7 +60,6 @@ export default class ProfileContainer extends Component {
                       .filter(e => e.reimburseFrom.split('@')[1] == userTransactions[i].timestamp);
                   }
                   this.setState({ transactions: userTransactions });
-                  console.log(userTransactions);
                 });
               })
             });

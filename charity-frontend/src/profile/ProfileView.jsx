@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid } from 'react-feather'
+import { User, Link as Chain } from 'react-feather'
 import { PageHeader, Layout, Button } from 'antd';
 import CharityBox from './CharityBox';
 import './ProfileView.css';
@@ -23,8 +23,8 @@ export default class ProfileView extends Component {
       <div className='profile-container'>
         <Header className="header">
           <div className="top-bar">
-            <h1>CharityChain</h1>
-            <span id="username">{match.params.id}</span>
+            <h1 style={{ display: "flex", alignItems: "center", marginRight: "4px" }}><Chain size={36} />CharityChain</h1>
+            <span id="username"><User style={{ marginRight: "8px" }} />{match.params.id}</span>
             <Link style={{ marginRight: "2%" }} to={`/user/${match.params.id}/browse`}>
               <Button className="logout">Browse Charities</Button>
             </Link>
@@ -33,39 +33,41 @@ export default class ProfileView extends Component {
             </Link>
           </div>
         </Header>
-        {consumedTransactions && consumedTransactions.length > 0 ?
-        <div>
-          <PageHeader title="Used Donations" subTitle="Donations that have been spent by the charity" />
-          <div className='profile-charities-container'>
-            {consumedTransactions.map(transaction => 
-              <CharityBox
+        <div className="profile-view-body">
+            {consumedTransactions && consumedTransactions.length > 0 ?
+            <div>
+            <PageHeader title="Used Donations" subTitle="Donations that have been spent by the charity" />
+            <div className='profile-charities-container'>
+                {consumedTransactions.map(transaction => 
+                <CharityBox
+                    name={transaction.charityName}
+                    logo={transaction.charityLogo}
+                    transactionId={transaction.transactionId}
+                    amount={transaction.amount}
+                    timestamp={transaction.timestamp}
+                    spending={transaction.reimbursements
+                    .map(elem => elem.category)
+                    .filter(onlyUnique)
+                    }
+                />
+                )}
+            </div>
+            </div> : null}
+            {unconsumedTransactions && unconsumedTransactions.length > 0 ?
+            <div>
+            <PageHeader title="Unused Donations" subTitle="Donations that have been not spent by the charity" />
+            <div className='profile-charities-container'>
+            {unconsumedTransactions.map(transaction => 
+                <CharityBox
                 name={transaction.charityName}
                 logo={transaction.charityLogo}
                 transactionId={transaction.transactionId}
                 amount={transaction.amount}
                 timestamp={transaction.timestamp}
-                spending={transaction.reimbursements
-                  .map(elem => elem.category)
-                  .filter(onlyUnique)
-                }
-              />
-            )}
-          </div>
-        </div> : null}
-        {unconsumedTransactions && unconsumedTransactions.length > 0 ?
-        <div>
-        <PageHeader title="Unused Donations" subTitle="Donations that have been not spent by the charity" />
-        <div className='profile-charities-container'>
-          {unconsumedTransactions.map(transaction => 
-            <CharityBox
-              name={transaction.charityName}
-              logo={transaction.charityLogo}
-              transactionId={transaction.transactionId}
-              amount={transaction.amount}
-              timestamp={transaction.timestamp}
-            />)}
-          </div>
-        </div> : null}
+                />)}
+            </div>
+            </div> : null}
+        </div>
       </div>
     );
   }

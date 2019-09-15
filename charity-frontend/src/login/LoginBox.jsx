@@ -91,6 +91,7 @@ export default class LoginBox extends React.Component {
         <Form className="login-form">
           <Form.Item>
             <Input
+              autoFocus
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="E-mail"
               onChange={this.updateUsername}
@@ -131,7 +132,7 @@ export default class LoginBox extends React.Component {
         </Form>
         <Button
           className="back"
-          type="primary"
+          type="secondary"
           onClick={() => {
             this.props.changeLogin(0);
           }} 
