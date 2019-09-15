@@ -76,36 +76,36 @@ export default class CharityView extends React.Component {
         if (charitiesArr[i].account_number.toString() === this.props.match.params.id) {
           let identity = charitiesArr[i];
           identity.key = keysArr[i];
-          this.setState({ identity: charitiesArr[i] }, () => {
-            axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
-            .then((res) => {
-              wallet.getAllReimbursements().then((reimbursements) => {
-                console.log(reimbursements)
-                let tmpArray = [];
-                let i = 0;
-                res.data.result.forEach((elem) => {
-                  let find = reimbursements.data.find((reimbursementRecord) => {
-                    const condition = (elem.id === reimbursementRecord.tdTransactionRecord) &&
-                                      (reimbursementRecord.reimburseTo === this.state.identity.address);
-                    return condition;
-                  })
+          // this.setState({ identity: charitiesArr[i] }, () => {
+          //   axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
+          //   .then((res) => {
+          //     wallet.getAllReimbursements().then((reimbursements) => {
+          //       console.log(reimbursements)
+          //       let tmpArray = [];
+          //       let i = 0;
+          //       res.data.result.forEach((elem) => {
+          //         let find = reimbursements.data.find((reimbursementRecord) => {
+          //           const condition = (elem.id === reimbursementRecord.tdTransactionRecord) &&
+          //                             (reimbursementRecord.reimburseTo === this.state.identity.address);
+          //           return condition;
+          //         })
 
-                  if (!find && elem.currencyAmount > 0) {
-                    let tmpTransaction = elem;
-                    tmpTransaction.currencyAmount = this.precise(tmpTransaction.currencyAmount, true);
-                    tmpTransaction.key = i;
-                    i += 1;
-                    tmpTransaction.location = elem.locationCity ? `${elem.locationCity}, ${elem.locationCountry}` : "N/A";
-                    tmpArray.push(elem);
-                  }
-                });
-                this.setState({transactionData: tmpArray, loading: false})
-              })
-            })
-            wallet.getBalance(this.state.identity.address).then((res) => {
-              this.setState({balance: res.balance/100})
-            })
-          });
+          //         if (!find && elem.currencyAmount > 0) {
+          //           let tmpTransaction = elem;
+          //           tmpTransaction.currencyAmount = this.precise(tmpTransaction.currencyAmount, true);
+          //           tmpTransaction.key = i;
+          //           i += 1;
+          //           tmpTransaction.location = elem.locationCity ? `${elem.locationCity}, ${elem.locationCountry}` : "N/A";
+          //           tmpArray.push(elem);
+          //         }
+          //       });
+          //       this.setState({transactionData: tmpArray, loading: false})
+          //     })
+          //   })
+          //   wallet.getBalance(this.state.identity.address).then((res) => {
+          //     this.setState({balance: res.balance/100})
+          //   })
+          // });
           break;
         }
       }
@@ -114,7 +114,7 @@ export default class CharityView extends React.Component {
   }
 
   // wallet.get('/getBalanceOfWallet')
-  // addCharity = () => doCreateCharity("id", 4242584820, "donate@wwf.com", "Animals", base64)
+  // addCharity = () => db.doCreateCharity("id", 1522322348, "charity@we.com", 'Humanitarian', 'WE Charity')
 
   constructor(props) {
     super(props);
@@ -221,6 +221,7 @@ export default class CharityView extends React.Component {
               <Link style={{ marginLeft: "2%" }} to={`/`}>
                 <Button className="logout">Log out</Button>
               </Link>
+              {/* <button onClick={this.addCharity}>Add Charity</button> */}
             </div>
           </Header>
           <Layout>
@@ -232,7 +233,6 @@ export default class CharityView extends React.Component {
                   </div> :
                 <Table rowSelection={rowSelection} dataSource={this.state.transactionData} columns={columns} />
               }
-              <button onClick={this.addCharity}>Add Charity</button>
             </Content>
             <Sider width={400} className="sider">
               <CharitySider amount={`$${this.precise(this.state.amount, true)}`}
