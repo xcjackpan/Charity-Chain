@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid } from 'react-feather'
-import { PageHeader } from 'antd';
+import { PageHeader, Layout, Button } from 'antd';
 import CharityBox from './CharityBox';
 import './ProfileView.css';
+
+const { Header } = Layout;
 
 export default class ProfileView extends Component {
   constructor(props) {
@@ -14,10 +16,21 @@ export default class ProfileView extends Component {
     const { transactions, consumedTransactions, match } = this.props;
     return (
       <div className='profile-container'>
-        <Link to={`/user/${match.params.id}/browse`}><div><Grid /><span>Browse Charities</span></div></Link>
+        <Header className="header">
+          <div className="top-bar">
+            <h1>CharityChain</h1>
+            <span id="username">{this.props.match.params.id}</span>
+            <Link style={{ marginRight: "2%" }} to={`/user/${match.params.id}/browse`}>
+              <Button className="logout">Browse Charities</Button>
+            </Link>
+            <Link to={`/`}>
+              <Button className="logout">Log out</Button>
+            </Link>
+          </div>
+        </Header>
         {consumedTransactions && consumedTransactions.length > 0 ?
         <div>
-          <PageHeader title="Consumed Transactions" subTitle="Donations that have been used" />
+          <PageHeader title="Used Donations" subTitle="Donations that have been spent by the charity" />
           <div className='profile-charities-container'>
             {consumedTransactions.map(transaction => 
               <CharityBox
@@ -33,7 +46,7 @@ export default class ProfileView extends Component {
         </div> : null}
         {transactions && transactions.length > 0 ?
         <div>
-        <PageHeader title="Unconsumed Transactions" subTitle="Donations that have been not used" />
+        <PageHeader title="Unused Donations" subTitle="Donations that have been not spent by the charity" />
         <div className='profile-charities-container'>
           {transactions.map(transaction => 
             <CharityBox

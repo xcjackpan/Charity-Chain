@@ -2,6 +2,22 @@ import { db } from './firebase';
 
 // User API
 
+export const doAppendToAggregateDonations = (uid, donations) => {
+  return db.ref(`charities/${uid}/aggregate_donations`).once('value')
+    .then(snapshot => {
+      let current_aggregate_donations = snapshot.val();
+      Object.keys(donations).forEach((elem) => {
+        if (current_aggregate_donations[elem]) {
+          current_aggregate_donations[elem] += donations[elem];
+        } else {
+          current_aggregate_donations[elem] = donations[elem];
+        }
+      })
+      db.ref(`charities/${uid}/aggregate_donations`).set(current_aggregate_donations);
+      return current_aggregate_donations;
+    });
+}
+
 export const getListOfUsers = () => {
   return db.ref('users').once('value')
     .then(snapshot => {
@@ -42,15 +58,6 @@ export const getRefOfTransactions = (uid) => {
 
 export const consumeTransactionFromUser = (uid, public_id) =>
   db.ref(`users/${uid}/consumed_transaction/${public_id}`).push(public_id);
-
-//export const upvoteImage = (uid, public_id) => {
-//  db.ref(`users/${uid}/upvoted/${public_id}`).push(public_id);
-//  let imageRef = db.ref(`images/${public_id}`);
-//  imageRef.transaction(data => {
-//    data.upvote++;
-//    return data;
-//  });
-//}
 
 export const getRefOfConsumedTransactions = (uid) => {
   return db.ref(`users/${uid}/consumed_transaction`).once('value')
