@@ -35,36 +35,32 @@ export default class Home extends React.Component {
       .then(res => {
         const charitiesArr = Object.values(res);
         const charities = _.groupBy(charitiesArr, 'category')
-        Object.keys(charities).forEach(category => {
-          if (this.state.sort === 'popular') {
-            charities[category] = _.reverse(_.sortBy(charities[category], ['donation_count']));
-          } else {
-            charities[category] = _.reverse(_.sortBy(charities[category], ['aggregate_donations.Auto and Transport']))
-          }
-        })
-        console.log(charities);
-        this.setState({ charities });
+        this.setState({ charities }, () => this.processAndSortCharities());
       });
   }
-
-  // componentDidUpdate() {
-  //   const charities = this.state.charities
-  //   Object.keys(charities).forEach(category => {
-  //     if (this.state.sort === 'popular') {
-  //       charities[category] = _.reverse(_.sortBy(charities[category], ['donation_count']));
-  //     } else {
-  //       charities[category] = _.reverse(_.sortBy(charities[category], ['aggregate_donations.Auto and Transport']))
-  //     }
-  //   })
-  //   console.log(charities);
-  //   this.setState({ charities });
-  // }
 
   changeSort = (value) => {
     console.log(value)
     this.setState({ sort: value }, () => {
-      const charities = this.state.charities
+      this.processAndSortCharities();
+    }) 
+  }
+
+  processAndSortCharities = () => {
+    const charities = this.state.charities
       Object.keys(charities).forEach(category => {
+        let charityList = charities[category];
+        // console.log(charityList)
+        charityList = charityList.map(charity => {
+          const sum = charity.aggregate_donations ? _.sum(Object.values(charity.aggregate_donations)) : 0;
+          // console.log(sum)
+          if (sum) {
+            Object.keys(charity.aggregate_donations)
+              .forEach(key => { charity.aggregate_donations[key] = Math.round((charity.aggregate_donations[key] / sum) * 100) })
+          }
+          return charity;
+        })
+        charities[category] = charityList;
         if (this.state.sort === 'popular') {
           charities[category] = _.reverse(_.sortBy(charities[category], ['donation_count']));
         } else {
@@ -73,7 +69,6 @@ export default class Home extends React.Component {
       })
       console.log(charities);
       this.setState({ charities });
-    }) 
   }
 
   render() {
