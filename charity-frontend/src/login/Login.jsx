@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginSelect from './LoginSelect';
 import LoginBox from './LoginBox';
+import { Link as Chain } from 'react-feather';
 import './Login.css';
 
 const NO_LOGIN = 0;
@@ -22,21 +23,22 @@ export default class Login extends React.Component {
   }
 
   render() {
-    if (this.state.showLogin === NO_LOGIN) {
-      return (
-        <div id="login-container">
-          <LoginSelect isCharity={false} changeLogin={this.changeLogin}/>
-          <LoginSelect isCharity changeLogin={this.changeLogin}/>
-        </div>
-      );
-    } else {
-      return (
-        <div id="login-container">
-          <LoginBox isCharity={this.state.showLogin === CHARITY_LOGIN}
-                    changeLogin={this.changeLogin} 
-                    logIn={this.props.logIn} />
-        </div>
-      )
-    }
+    return (
+      <div className="login-page">
+        <h1 style={{ display: "flex", alignItems: "center", marginRight: "4px" }} className="title"><Chain size={36} />CharityChain</h1>
+        {this.state.showLogin === NO_LOGIN ? 
+          <div id="login-container">
+            <LoginSelect isCharity={false} changeLogin={this.changeLogin}/>
+            <LoginSelect isCharity changeLogin={this.changeLogin}/>
+          </div> :
+          <div id="login-container">
+            <LoginBox isCharity={this.state.showLogin === CHARITY_LOGIN}
+                      changeLogin={this.changeLogin} 
+                      logIn={this.props.logIn} />
+          </div>
+        }
+      </div>
+      
+    )
   }
 }

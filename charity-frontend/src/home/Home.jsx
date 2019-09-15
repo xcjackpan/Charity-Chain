@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { Button, Select, Layout } from 'antd';
-import { User} from 'react-feather'
+import { User, Link as Chain } from 'react-feather'
 import CharityList from './CharityList';
 import { getListOfUsers, getRefOfCharities } from '../configs/db.js';
 import './Home.css';
@@ -87,7 +87,7 @@ export default class Home extends React.Component {
         <Layout>
           <Header className="header">
             <div className="top-bar">
-              <h1>CharityChain</h1>
+              <h1 style={{ display: "flex", alignItems: "center", marginRight: "4px" }}><Chain size={36} />CharityChain</h1>
               <span id="username"><User style={{ marginRight: "8px" }} />{this.props.match.params.id}</span>
               <Link style={{ marginRight: "2%" }} to={`/user/${this.props.match.params.id}/profile`}>
                 <Button className="logout">My Profile</Button>

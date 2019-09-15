@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { User } from 'react-feather'
+import { User, Link as Chain } from 'react-feather'
 import { PageHeader, Layout, Button } from 'antd';
 import CharityBox from './CharityBox';
 import './ProfileView.css';
@@ -23,7 +23,7 @@ export default class ProfileView extends Component {
       <div className='profile-container'>
         <Header className="header">
           <div className="top-bar">
-            <h1>CharityChain</h1>
+            <h1 style={{ display: "flex", alignItems: "center", marginRight: "4px" }}><Chain size={36} />CharityChain</h1>
             <span id="username"><User style={{ marginRight: "8px" }} />{match.params.id}</span>
             <Link style={{ marginRight: "2%" }} to={`/user/${match.params.id}/browse`}>
               <Button className="logout">Browse Charities</Button>
