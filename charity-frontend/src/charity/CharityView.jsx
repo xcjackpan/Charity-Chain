@@ -80,17 +80,22 @@ export default class CharityView extends React.Component {
             axios.get(`${td_uri}customers/${this.state.identity.td_id}/transactions`, config)
             .then((res) => {
               wallet.getAllReimbursements().then((reimbursements) => {
-                console.log(reimbursements)
                 let tmpArray = [];
                 let i = 0;
                 res.data.result.forEach((elem) => {
-                  let find = reimbursements.data.find((reimbursementRecord) => {
-                    const condition = (elem.id === reimbursementRecord.tdTransactionRecord) &&
-                                      (reimbursementRecord.reimburseTo === this.state.identity.address);
-                    return condition;
-                  })
+                  let flag = false;
+                  
+                  let len = reimbursements.data.length;
+                  for (let i = 0; i < len; i++) {
+                    if ((elem.id === reimbursements.data[i].tdTransactionRecord) &&
+                        (reimbursements.data[i].reimburseTo === this.state.identity.address)) {
+                      console.log(elem)
+                      flag = true;
+                      break;
+                    }
+                  }
 
-                  if (!find && elem.currencyAmount > 0) {
+                  if (!flag && elem.currencyAmount > 0) {
                     let tmpTransaction = elem;
                     tmpTransaction.currencyAmount = this.precise(tmpTransaction.currencyAmount, true);
                     tmpTransaction.key = i;
@@ -170,12 +175,25 @@ export default class CharityView extends React.Component {
   reimburse = (amount) => {
     this.resetCheckboxes();
     amount = this.convertCurrencyAmountToInt(amount.substr(1));
-    this.setState({balance: ((this.state.balance * 100) - amount)/100});
     /*
     wallet.getBalance(this.state.identity.address).then((res) => {
       this.setState({balance: res.balance})
     })
     */
+    let tmpArray = [];
+    this.state.transactionData.forEach((transactionElem) => {
+      let flag = false;
+      this.state.selectedRowKeys.forEach((rowIndex) => {
+        if (transactionElem.id === this.state.transactionData[rowIndex].id) {
+          flag = true;
+        }
+      });
+      if (!flag) {
+        tmpArray.push(transactionElem);
+      }
+    });
+    this.setState({balance: ((this.state.balance * 100) - amount)/100, 
+                   transactionData: tmpArray})
     let aggregate_donations = {};
     this.state.selectedRowKeys.forEach((elem) => {
       let type = this.state.transactionData[elem].categoryTags[0];
