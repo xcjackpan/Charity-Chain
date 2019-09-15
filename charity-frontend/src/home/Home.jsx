@@ -56,7 +56,7 @@ export default class Home extends React.Component {
             <div className="top-bar">
               <h1>CharityChain</h1>
               <span id="username">{this.props.match.params.id}</span>
-              <Link style={{ marginRight: "2%" }}to={`/user/${this.props.match.params.id}/profile`}>
+              <Link style={{ marginRight: "2%" }} to={`/user/${this.props.match.params.id}/profile`}>
                 <Button className="logout">My Profile</Button>
               </Link>
               <Link to={`/`}>

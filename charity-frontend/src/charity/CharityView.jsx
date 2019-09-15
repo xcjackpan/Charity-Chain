@@ -66,14 +66,37 @@ const columns = [
 ];
 
 export default class CharityView extends React.Component {
+
   componentDidMount() {
     return getRefOfCharities().then(res => {
       const charitiesArr = Object.values(res);
-      charitiesArr.forEach((elem) => {
-        if (elem.account_number.toString() === this.props.match.params.id) {
-          this.setState({ identity: elem });
+      let len = charitiesArr.length;
+      for (let i = 0; i < len; i++) {
+        if (charitiesArr[i].account_number.toString() === this.props.match.params.id) {
+          this.setState({ identity: charitiesArr[i] }, () => {
+            axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
+            .then((res) => {
+              let tmpArray = [];
+              let i = 0;
+              res.data.result.forEach((elem) => {
+                if (elem.currencyAmount > 0) {
+                  let tmpTransaction = elem;
+                  tmpTransaction.currencyAmount = this.precise(tmpTransaction.currencyAmount, true);
+                  tmpTransaction.key = i;
+                  i += 1;
+                  tmpTransaction.location = elem.locationCity ? `${elem.locationCity}, ${elem.locationCountry}` : "N/A";
+                  tmpArray.push(elem);
+                }
+              });
+              this.setState({transactionData: tmpArray, loading: false})
+            })
+            wallet.getBalance(this.state.identity.address).then((res) => {
+              console.log('balance:', res);
+            })
+          });
+          break;
         }
-      })
+      }
       return;
     })
   }
@@ -91,22 +114,6 @@ export default class CharityView extends React.Component {
       transactionData: [],
       selectedRowKeys: [],
     }
-    axios.get(`${td_uri}customers/${initialCustomerId}/transactions`, config)
-      .then((res) => {
-        let tmpArray = [];
-        let i = 0;
-        res.data.result.forEach((elem) => {
-          if (elem.currencyAmount > 0) {
-            let tmpTransaction = elem;
-            tmpTransaction.currencyAmount = this.precise(tmpTransaction.currencyAmount, true);
-            tmpTransaction.key = i;
-            i += 1;
-            tmpTransaction.location = elem.locationCity ? `${elem.locationCity}, ${elem.locationCountry}` : "N/A";
-            tmpArray.push(elem);
-          }
-        });
-        this.setState({transactionData: tmpArray, loading: false})
-      })
   }
 
   precise = (num, returnAsString) => {
@@ -162,7 +169,7 @@ export default class CharityView extends React.Component {
             <div className="top-bar">
               <span className="name">{this.state.identity.name}</span>
               <span className="credits">300 credits</span>
-              <Link id="profile" to={`/`}>
+              <Link style={{ marginLeft: "2%" }} to={`/`}>
                 <Button className="logout">Log out</Button>
               </Link>
             </div>

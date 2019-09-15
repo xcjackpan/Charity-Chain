@@ -26,6 +26,11 @@
   color: white;
 }
 
+.top-bar a {
+  display: flex;
+  align-items: center;
+}
+
 .sider {
   height: 100vh;
   background-color: #f5f5f5 !important;
