@@ -3,6 +3,7 @@ import ProfileView from './ProfileView';
 import _ from 'lodash';
 import { db } from '../configs/index';
 import { getListOfUsers } from '../configs/db';
+import { wallet } from '../configs';
 
 export default class ProfileContainer extends Component {
 
@@ -39,6 +40,7 @@ export default class ProfileContainer extends Component {
   }
 
   render() {
+    wallet.getAllReimbursements().then((res) => console.log(res));
     return (
         <ProfileView { ...this.props } transactions={this.state.transactions} />
     );

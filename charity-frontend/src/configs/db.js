@@ -43,15 +43,6 @@ export const getRefOfTransactions = (uid) => {
 export const consumeTransactionFromUser = (uid, public_id) =>
   db.ref(`users/${uid}/consumed_transaction/${public_id}`).push(public_id);
 
-//export const upvoteImage = (uid, public_id) => {
-//  db.ref(`users/${uid}/upvoted/${public_id}`).push(public_id);
-//  let imageRef = db.ref(`images/${public_id}`);
-//  imageRef.transaction(data => {
-//    data.upvote++;
-//    return data;
-//  });
-//}
-
 export const getRefOfConsumedTransactions = (uid) => {
   return db.ref(`users/${uid}/consumed_transaction`).once('value')
     .then(snapshot => {
