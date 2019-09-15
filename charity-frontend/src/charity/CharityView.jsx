@@ -91,7 +91,7 @@ export default class CharityView extends React.Component {
               this.setState({transactionData: tmpArray, loading: false})
             })
             wallet.getBalance(this.state.identity.address).then((res) => {
-              console.log('balance:', res);
+              this.setState({balance: res.balance})
             })
           });
           break;
@@ -108,6 +108,7 @@ export default class CharityView extends React.Component {
     super(props);
     this.state = {
       identity: {},
+      balance: 0,
       amount: 0,
       name: "",
       loading: true,
@@ -168,7 +169,7 @@ export default class CharityView extends React.Component {
           <Header className="header">
             <div className="top-bar">
               <span className="name">{this.state.identity.name}</span>
-              <span className="credits">300 credits</span>
+              <span className="credits">{`Current Balance: $${this.precise(this.state.balance, true)}`}</span>
               <Link style={{ marginLeft: "2%" }} to={`/`}>
                 <Button className="logout">Log out</Button>
               </Link>
