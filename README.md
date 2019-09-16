@@ -1,5 +1,7 @@
 # CharityChain
 
+_Submitted to Hack the North 2019_
+
 CharityChain is a platform that allows users to donate to charities and see exactly what their money is being spent on. All transactions, both donations and charity expenditures, are tracked on a public Ethereum blockchain. This makes transaction information immutable, secure, and totally transparent. Users get to stay anonymous, while charities are put on blast. We make it easy to be generous and hard to be greedy.
 
 ## Technical Design
